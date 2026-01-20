@@ -1,0 +1,47 @@
+{
+  "name": "@ranwhenparked/trustap-sdk",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "deno": "./src/index.deno.ts",
+      "node": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./deno": "./src/index.deno.ts",
+    "./node": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "node scripts/build-node.mjs",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint --fix --cache --cache-location .cache/.eslintcache",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "generate:types": "npx openapi-typescript https://docs.trustap.com/_spec/apis/openapi.yaml -o src/schema.d.ts",
+    "generate:ops": "node ./scripts/generate-operations-map.mjs",
+    "generate:security": "node ./scripts/generate-security-map.mjs \"../../Downloads/openapi (2).json\"",
+    "generate": "npm run generate:types && npm run generate:ops && npm run generate:security"
+  },
+  "dependencies": {
+    "openapi-fetch": "^0.14.1"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^3.2.4",
+    "eslint": "^9.39.2",
+    "prettier": "^3.8.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.53.1",
+    "vitest": "^3.2.4",
+    "yaml": "^2.8.2"
+  }
+}

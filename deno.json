@@ -1,14 +1,9 @@
 {
-  "tasks": {},
-  "compilerOptions": {
-    "allowJs": true,
-    "lib": [
-      "deno.window",
-      "dom"
-    ],
-    "strict": true
-  },
   "imports": {
-    "openapi-typescript-codegen": "npm:openapi-typescript-codegen@0.27.0"
+    "@std/assert": "jsr:@std/assert@^1"
+  },
+  "compilerOptions": {
+    "lib": ["deno.window", "dom"],
+    "strict": true
   }
 }
