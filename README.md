@@ -1,6 +1,6 @@
 # @ranwhenparked/trustap-sdk
 
-A lightweight typed Trustap API wrapper built with openapi-typescript + openapi-fetch.
+A lightweight typed [Trustap API](https://docs.trustap.com/apis/openapi) wrapper built with openapi-typescript + openapi-fetch.
 
 ## Installation
 
