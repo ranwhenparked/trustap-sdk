@@ -1,5 +1,5 @@
 {
-  "name": "trustap-sdk",
+  "name": "@ranwhenparked/trustap-sdk",
   "version": "0.2.0",
   "description": "Trustap API SDK (OpenAPI)",
   "type": "module",
