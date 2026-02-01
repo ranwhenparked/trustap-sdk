@@ -1,5 +1,9 @@
 # trustap-sdk
 
+[![npm version](https://img.shields.io/npm/v/@ranwhenparked/trustap-sdk.svg)](https://www.npmjs.com/package/@ranwhenparked/trustap-sdk)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
+
 Type-safe TypeScript SDK for the [Trustap API](https://trustap.com) with webhook validation.
 
 ## Overview
