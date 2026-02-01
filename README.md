@@ -128,9 +128,9 @@ async function handleWebhook(req: Request) {
 Create handlers with compile-time exhaustiveness checking:
 
 ```typescript
-import { createWebhookHandlers, type TrustapWebhookEvent } from "trustap-sdk";
+import { createOnlineWebhookHandlers, type TrustapWebhookEvent } from "trustap-sdk";
 
-const handlers = createWebhookHandlers({
+const handlers = createOnlineWebhookHandlers({
   "basic_tx.joined": (event) => {
     console.log("Seller joined:", event.target_preview.joined);
   },
@@ -172,9 +172,9 @@ function handleEvent(event: TrustapWebhookEvent) {
 Map webhook events to transaction states:
 
 ```typescript
-import { mapWebhookToTrustapState } from "trustap-sdk";
+import { mapWebhookToOnlineState } from "trustap-sdk";
 
-const state = mapWebhookToTrustapState("basic_tx.paid");
+const state = mapWebhookToOnlineState("basic_tx.paid");
 // Returns: "paid"
 ```
 
@@ -187,7 +187,7 @@ Import only what you need:
 import { createTrustapClient, trustapWebhookEventSchema } from "trustap-sdk";
 
 // Webhooks only (smaller bundle)
-import { trustapWebhookEventSchema, createWebhookHandlers } from "trustap-sdk/webhooks";
+import { trustapWebhookEventSchema, createOnlineWebhookHandlers } from "trustap-sdk/webhooks";
 
 // Types only (no runtime code)
 import type { paths, components } from "trustap-sdk/types";

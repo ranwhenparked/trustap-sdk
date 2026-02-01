@@ -6,7 +6,7 @@
  */
 
 import { z } from "zod/v4";
-import type { TrustapWebhookEventCode } from "./state.ts";
+import type { TrustapOnlineWebhookEventCode } from "./state.ts";
 
 // ============================================================================
 // Shared Sub-Schemas
@@ -337,8 +337,8 @@ type WebhookEventHandler<T extends TrustapWebhookEvent> = (
  * Exhaustive handler map type - TypeScript will error if any event is missing.
  * Use this to ensure all webhook events are handled.
  */
-export type TrustapWebhookHandlers = {
-  [K in TrustapWebhookEventCode]: WebhookEventHandler<
+export type TrustapOnlineWebhookHandlers = {
+  [K in TrustapOnlineWebhookEventCode]: WebhookEventHandler<
     Extract<TrustapWebhookEvent, { code: K }>
   >;
 };
@@ -347,15 +347,15 @@ export type TrustapWebhookHandlers = {
  * Helper to create handlers with compile-time exhaustiveness checking.
  *
  * @example
- * const handlers = createWebhookHandlers({
+ * const handlers = createOnlineWebhookHandlers({
  *   "basic_tx.joined": (event) => { console.log(event.target_preview.joined); },
  *   "basic_tx.paid": (event) => { console.log(event.target_preview.paid); },
  *   // ... TypeScript errors if any event code is missing
  * });
  */
-export function createWebhookHandlers(
-  handlers: TrustapWebhookHandlers,
-): TrustapWebhookHandlers {
+export function createOnlineWebhookHandlers(
+  handlers: TrustapOnlineWebhookHandlers,
+): TrustapOnlineWebhookHandlers {
   return handlers;
 }
 
