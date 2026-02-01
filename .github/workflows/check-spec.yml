@@ -12,12 +12,12 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Fetch latest spec
-        run: curl -o openapi-latest.yaml https://docs.trustap.com/apis/trustap-openapi.yaml
+        run: curl -o spec/openapi-latest.yaml https://docs.trustap.com/apis/trustap-openapi.yaml
 
       - name: Check for changes
         id: diff
         run: |
-          if diff -q openapi.yaml openapi-latest.yaml > /dev/null; then
+          if diff -q spec/openapi.yaml spec/openapi-latest.yaml > /dev/null; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT
@@ -32,7 +32,7 @@ jobs:
       - name: Generate types and create PR
         if: steps.diff.outputs.changed == 'true'
         run: |
-          mv openapi-latest.yaml openapi.yaml
+          mv spec/openapi-latest.yaml spec/openapi.yaml
           npm ci
           npm run generate
           npm run build

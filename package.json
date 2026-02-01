@@ -26,10 +26,10 @@
     "mod.ts"
   ],
   "scripts": {
-    "generate": "openapi-typescript openapi.yaml -o src/generated/types.ts",
+    "generate": "openapi-typescript spec/openapi.yaml -o src/generated/types.ts",
     "build": "tsc -p tsconfig.json",
     "prepublishOnly": "npm run generate && npm run build",
-    "fetch-spec": "curl -o openapi.yaml https://docs.trustap.com/apis/trustap-openapi.yaml",
+    "fetch-spec": "curl -o spec/openapi.yaml https://docs.trustap.com/apis/trustap-openapi.yaml",
     "sync": "npm run fetch-spec && npm run generate"
   },
   "keywords": [],
