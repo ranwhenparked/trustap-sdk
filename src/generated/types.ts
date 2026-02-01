@@ -77,32 +77,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/clients/{client_id}/transactions": {
+    "/clients/{client_id}/timelines": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        put?: never;
-        /** Get transactions by page */
-        post: operations["basic_client.getTransactions"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/clients/{client_id}/transactions/{transaction_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get an online transaction by its ID as a specific client */
-        get: operations["basic_client.getTransaction"];
+        /** Get timelines for the given client */
+        get: operations["basic_client.getTimelinesForClient"];
         put?: never;
         post?: never;
         delete?: never;
@@ -162,23 +145,6 @@ export interface paths {
         };
         /** Get the balance for the current user in each currency */
         get: operations["users.getBalances"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/me/carriers/{carrier_id}/facilities": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get the list of facilities for a given carrier */
-        get: operations["basic.getCarrierFacilityOptions"];
         put?: never;
         post?: never;
         delete?: never;
@@ -250,31 +216,6 @@ export interface paths {
         get: operations["personal.getInstantPayoutBalance"];
         put?: never;
         post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/me/multi_use_listings/create": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create a new multi-use listing for the logged-in user
-         * @deprecated
-         * @description Multi-use listings are disabled once payment has been submitted
-         *     for a transaction created from it.
-         *     Offline access is allowed for this endpoint when the user has
-         *     granted the `basic_ls:offline_create` scope to the client
-         *     that is performing the request.
-         */
-        post: operations["basic.createMultiUseListing"];
         delete?: never;
         options?: never;
         head?: never;
@@ -445,31 +386,6 @@ export interface paths {
         get: operations["getProfilePayoutStatus"];
         put?: never;
         post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/me/single_use_listings/create": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create a new single-use listing for the logged-in user
-         * @deprecated
-         * @description Single-use listings are disabled once payment has been submitted
-         *     for a transaction created from it.
-         *     Offline access is allowed for this endpoint when the user has
-         *     granted the `basic_ls:offline_create` scope to the client
-         *     that is performing the request.
-         */
-        post: operations["basic.createSingleUseListing"];
         delete?: never;
         options?: never;
         head?: never;
@@ -684,178 +600,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/multi_use_listings/{listing_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get a listing by its ID
-         * @deprecated
-         */
-        get: operations["basic.getMultiUseListing"];
-        put?: never;
-        post?: never;
-        /**
-         * Delete this listing
-         * @deprecated
-         */
-        delete: operations["basic.deleteMultiUseListing"];
-        options?: never;
-        head?: never;
-        /**
-         * Patch listing properties
-         * @deprecated
-         */
-        patch: operations["basic.updateMultiUseListing"];
-        trace?: never;
-    };
-    "/multi_use_listings/{listing_id}/create_transaction": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create a transaction from this listing
-         * @deprecated
-         * @description Calling `/create_transaction` with no parameters will create a
-         *     new transaction with the details provided by the listing.
-         *
-         *     The optional `quantity` parameter can be passed to create a
-         *     transaction for a multiple of the original listing. In this
-         *     case, the `price` and `charge` for the new transaction will also
-         *     need to be passed.
-         *
-         *     As an example, consider a listing for a chair with a price of
-         *     `1234` `EUR`. If a user wants to buy 10 of these in a single
-         *     transaction then the charge for the total can be retrieved using
-         *     `GET /charge?price=1234&currency=usd&quantity=10` (note the
-         *     addition of the optional quantity parameter at the end). This
-         *     will return a `price` of `12340` and an associated `charge`.
-         *     These new values must then be passed to `/create_transaction`
-         *     with `quantity=10`, which will create a new transaction with the
-         *     new pricing information. The new transaction will also include a
-         *     `quantity` field, which doesn't have a functional effect on the
-         *     transaction, but is included for informational purposes.
-         *
-         *     Note that this functionality is not available for single-use
-         *     listings, from which only singular transactions may be created.
-         */
-        post: operations["basic.createTransactionFromMultiUseListing"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/multi_use_listings/{listing_id}/create_transaction_with_guest_buyer": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create a transaction from this listing
-         * @deprecated
-         */
-        post: operations["basic.createTransactionWithGuestBuyerFromMultiUseListing"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/multi_use_listings/{listing_id}/disable": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Disable this listing
-         * @deprecated
-         * @description Calling `/create_transaction` on a disabled listing will return
-         *     a `400` response.
-         */
-        post: operations["basic.disableMultiUseListing"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/multi_use_listings/{listing_id}/enable": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Enable this listing
-         * @deprecated
-         */
-        post: operations["basic.enableMultiUseListing"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/multi_use_listings/{listing_id}/set_description": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Set description for this listing
-         * @deprecated
-         */
-        post: operations["basic.setMultiUseListingDescription"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/multi_use_listings/{listing_id}/set_pricing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Set pricing for this listing
-         * @deprecated
-         */
-        post: operations["basic.setMultiUseListingPricing"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/notifications/{notification_id}": {
         parameters: {
             query?: never;
@@ -947,32 +691,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/clients/{client_id}/transactions": {
+    "/p2p/clients/{client_id}/timelines": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        put?: never;
-        /** Get p2p transactions by page for a client */
-        post: operations["p2p_client.getTransactions"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/p2p/clients/{client_id}/transactions/{transaction_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get a face-to-face transaction by its ID as a specific client */
-        get: operations["p2p_client.getTransaction"];
+        /** Get timelines for the given client */
+        get: operations["p2p_client.getTimelinesForClient"];
         put?: never;
         post?: never;
         delete?: never;
@@ -995,57 +722,6 @@ export interface paths {
          *     page url
          */
         post: operations["p2p.createWithSeller"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/p2p/me/multi_use_listings/create": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create a new multi-use, face-to-face listing for the logged-in
-         *     user
-         * @deprecated
-         * @description Multi-use listings can be used to create transactions.
-         *     Offline access is allowed for this endpoint when the user has
-         *     granted the `p2p_ls:offline_create` scope to the client
-         *     that is performing the request.
-         */
-        post: operations["createP2PMultiUseListingWithDetails"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/p2p/me/single_use_listings/create": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create a new single-use, face-to-face listing for the logged-in
-         *     user
-         * @deprecated
-         * @description Single-use listings are disabled once the remainder has been
-         *     paid for a transaction created from it.
-         *     Offline access is allowed for this endpoint when the user has
-         *     granted the `p2p_ls:offline_create` scope to the client
-         *     that is performing the request.
-         */
-        post: operations["createP2PSingleUseListingWithDetails"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1128,326 +804,6 @@ export interface paths {
          *     as guest users, or one party to be guest user and the other full user.
          */
         post: operations["p2p.createTransactionWithGuestUser"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/p2p/multi_use_listings/{listingId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get a listing by its ID
-         * @deprecated
-         */
-        get: operations["getP2PMultiUseListing"];
-        put?: never;
-        post?: never;
-        /**
-         * Delete this listing
-         * @deprecated
-         */
-        delete: operations["deleteP2PMultiUseListing"];
-        options?: never;
-        head?: never;
-        /**
-         * Patch listing properties
-         * @deprecated
-         */
-        patch: operations["patchP2PMultiUseListing"];
-        trace?: never;
-    };
-    "/p2p/multi_use_listings/{listingId}/create_transaction": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create a transaction from this listing
-         * @deprecated
-         * @description Calling `/create_transaction` with no parameters will create a
-         *     new transaction with the details provided by the listing.
-         *
-         *     The optional `quantity` parameter can be passed to create a
-         *     transaction for a multiple of the original listing. In this
-         *     case, the `price` and `charge` for the new transaction will also
-         *     need to be passed.
-         *
-         *     As an example, consider a listing for a chair with a price of
-         *     `1234` `EUR`. If a user wants to buy 10 of these in a single
-         *     transaction then the charge for the total can be retrieved using
-         *     `GET /p2p/charge?price=1234&currency=usd&quantity=10` (note the
-         *     addition of the optional quantity parameter at the end). This
-         *     will return a `price` of `12340` and an associated `charge`.
-         *     These new values must then be passed to `/create_transaction`
-         *     with `quantity=10`, which will create a new transaction with the
-         *     new pricing information. The new transaction will also include a
-         *     `quantity` field, which doesn't have a functional effect on the
-         *     transaction, but is included for informational purposes.
-         *
-         *     Note that this functionality is not available for single-use
-         *     listings, from which only singular transactions may be created.
-         *
-         *     Offline access is allowed for this endpoint when the user has
-         *     granted the `p2p_tx:offline_create_join` scope to the client
-         *     that is performing the request.
-         */
-        post: operations["createTransactionFromP2PMultiUseListing"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/p2p/multi_use_listings/{listingId}/disable": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Disable this listing
-         * @deprecated
-         * @description Calling `/create_transaction` on a disabled listing will return
-         *     a `400` response.
-         *     Offline access is allowed for this endpoint when the user has
-         *     granted the `p2p_ls:offline_update` scope to the client
-         *     that is performing the request.
-         */
-        post: operations["disableP2PMultiUseListing"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/p2p/multi_use_listings/{listingId}/enable": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Enable this listing
-         * @deprecated
-         * @description Offline access is allowed for this endpoint when the user has granted the `p2p_ls:offline_update` scope to the client that is performing the request.
-         */
-        post: operations["enableP2PMultiUseListing"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/p2p/multi_use_listings/{listingId}/set_deposit_pricing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Set pricing for this listing
-         * @deprecated
-         * @description Offline access is allowed for this endpoint when the user has granted the `p2p_ls:offline_update` scope to the client that is performing the request.
-         */
-        post: operations["setP2PMultiUseListingPricing"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/p2p/multi_use_listings/{listingId}/set_description": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Set the description for this listing
-         * @deprecated
-         * @description Offline access is allowed for this endpoint when the user has granted the `p2p_ls:offline_update` scope to the client that is performing the request.
-         */
-        post: operations["setP2PMultiUseListingDescription"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/p2p/multi_use_listings/{listingId}/set_skip_remainder": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Set skip remainder for this listing
-         * @deprecated
-         * @description Offline access is allowed for this endpoint when the user has granted the `p2p_ls:offline_update` scope to the client that is performing the request.
-         */
-        post: operations["setP2PMultiUseListingSkipRemainder"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/p2p/single_use_listings/{listingId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get a listing by its ID
-         * @deprecated
-         */
-        get: operations["getP2PSingleUseListing"];
-        put?: never;
-        post?: never;
-        /**
-         * Delete this listing
-         * @deprecated
-         */
-        delete: operations["deleteP2PSingleUseListing"];
-        options?: never;
-        head?: never;
-        /**
-         * Patch listing properties
-         * @deprecated
-         */
-        patch: operations["patchP2PSingleUseListing"];
-        trace?: never;
-    };
-    "/p2p/single_use_listings/{listingId}/create_transaction": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create a transaction from this listing
-         * @deprecated
-         * @description Offline access is allowed for this endpoint when the user has granted the `p2p_tx:offline_create_join` scope to the client that is performing the request.
-         */
-        post: operations["createTransactionFromP2PSingleUseListing"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/p2p/single_use_listings/{listingId}/disable": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Disable this listing
-         * @deprecated
-         * @description Calling `/create_transaction` on a disabled listing will return
-         *     a `400` response.
-         *     Offline access is allowed for this endpoint when the user has
-         *     granted the `p2p_ls:offline_update` scope to the client
-         *     that is performing the request.
-         */
-        post: operations["disableP2PSingleUseListing"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/p2p/single_use_listings/{listingId}/enable": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Enable this listing
-         * @deprecated
-         * @description Offline access is allowed for this endpoint when the user has granted the `p2p_ls:offline_update` scope to the client that is performing the request.
-         */
-        post: operations["enableP2PSingleUseListing"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/p2p/single_use_listings/{listingId}/set_deposit_pricing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Set pricing for this listing
-         * @deprecated
-         * @description Offline access is allowed for this endpoint when the user has granted the `p2p_ls:offline_update` scope to the client that is performing the request.
-         */
-        post: operations["setP2PSingleUseListingPricing"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/p2p/single_use_listings/{listingId}/set_description": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Set the description for this listing
-         * @deprecated
-         * @description Offline access is allowed for this endpoint when the user has granted the `p2p_ls:offline_update` scope to the client that is performing the request.
-         */
-        post: operations["setP2PSingleUseListingDescription"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2021,23 +1377,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions_by_join_code/{join_code}/reject": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Reject a face-to-face transaction by its join code */
-        post: operations["p2p.rejectTransactionByJoinCode"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/p2p/transactions_by_join_code/{joinCode}": {
         parameters: {
             query?: never;
@@ -2071,156 +1410,6 @@ export interface paths {
          *     address.
          */
         post: operations["basic.getShippoShippingRates"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/single_use_listings/{listing_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get a listing by its ID
-         * @deprecated
-         */
-        get: operations["basic.getSingleUseListing"];
-        put?: never;
-        post?: never;
-        /**
-         * Delete this listing
-         * @deprecated
-         */
-        delete: operations["basic.deleteSingleUseListing"];
-        options?: never;
-        head?: never;
-        /**
-         * Patch listing properties
-         * @deprecated
-         */
-        patch: operations["basic.updateSingleUseListing"];
-        trace?: never;
-    };
-    "/single_use_listings/{listing_id}/create_transaction": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create a transaction from this listing
-         * @deprecated
-         */
-        post: operations["basic.createTransactionFromSingleUseListing"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/single_use_listings/{listing_id}/create_transaction_with_guest_buyer": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create a transaction from this listing
-         * @deprecated
-         */
-        post: operations["basic.createTransactionWithGuestBuyerFromSingleUseListing"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/single_use_listings/{listing_id}/disable": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Disable this listing
-         * @deprecated
-         * @description Calling `/create_transaction` on a disabled listing will return
-         *     a `400` response.
-         */
-        post: operations["basic.disableSingleUseListing"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/single_use_listings/{listing_id}/enable": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Enable this listing
-         * @deprecated
-         */
-        post: operations["basic.enableSingleUseListing"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/single_use_listings/{listing_id}/set_description": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Set description for this listing
-         * @deprecated
-         */
-        post: operations["basic.setSingleUseListingDescription"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/single_use_listings/{listing_id}/set_pricing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Set pricing for this listing
-         * @deprecated
-         */
-        post: operations["basic.setSingleUseListingPricing"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2277,28 +1466,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions-by-join-code/{join_code}/reject": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Reject an online transaction by its join code
-         * @description A transaction can't be rejected using its ID, because only the
-         *     buyer and seller of a transaction can access a transaction using
-         *     its ID.
-         */
-        post: operations["basic.rejectTransactionByJoinCode"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/transactions/{transaction_id}": {
         parameters: {
             query?: never;
@@ -2328,33 +1495,6 @@ export interface paths {
         put?: never;
         /** Accept complaint for this online transaction */
         post: operations["basic.acceptComplaint"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/transactions/{transaction_id}/accept_listing_transaction": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Allow this listing-based transaction to proceed
-         * @description "Listing transactions" are transactions created from listings
-         *     (using the `/create_transaction` endpoints for listings).
-         *     Listings transactions for online transactions must be accepted
-         *     by the creator of the listing using
-         *     `/accept_listing_transaction` in order to proceed.
-         *     Offline access is allowed for this endpoint when the user has
-         *     granted the `basic_ls:offline_accept_listing` scope to the client
-         *     that is performing the request.
-         */
-        post: operations["basic.acceptListingTransaction"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2648,23 +1788,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/delivery_point": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Set a delivery point for HR posta */
-        post: operations["basic.setDeliveryPoint"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/transactions/{transaction_id}/end_complaint_period": {
         parameters: {
             query?: never;
@@ -2719,48 +1842,6 @@ export interface paths {
          *     have to be submitted before making a call to this endpoint.
          */
         post: operations["basic.generateShipmentLabel"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/transactions/{transaction_id}/pick_up_point": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Set a pick up point for carrier (i.e HR posta) */
-        post: operations["basic.setPickUpPoint"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/transactions/{transaction_id}/reject_listing_transaction": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Cancel this listing-based transaction
-         * @description "Listing transactions" are transactions created from listings
-         *     (using the `/create_transaction` endpoints for listings).
-         *     Listings transactions for online transactions must be accepted
-         *     by the creator of the listing using
-         *     `/accept_listing_transaction` in order to proceed. This endpoint
-         *     instead rejects the listing transaction.
-         */
-        post: operations["basic.rejectListingTransaction"];
         delete?: never;
         options?: never;
         head?: never;
@@ -3086,23 +2167,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/users/clients/{client_id}/users/{user_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get user details for the specific client */
-        get: operations["users_client.getUserByClientID"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -3171,59 +2235,6 @@ export interface components {
          */
         OrderIssue: {
             description: string;
-        };
-        /**
-         * @example {
-         *       "allows_multi_use": true,
-         *       "created": "2019-12-25T09:00:00Z",
-         *       "creator_id": "ad5bb99f-85bf-47e1-be0d-15e7541c6ad7",
-         *       "deposit_pricing": {
-         *         "charge": 150,
-         *         "price": 5000
-         *       },
-         *       "description": "",
-         *       "id": "77f36253-7a43-4d47-897d-f73dd208e17a",
-         *       "skip_remainder": false
-         *     }
-         */
-        P2PMultiUseListing: {
-            allows_multi_use?: boolean;
-            created?: string;
-            creator_id?: string;
-            creator_role?: string;
-            currency?: string;
-            deposit_pricing?: components["schemas"]["basic.Pricing"];
-            description?: string;
-            /** Format: int64 */
-            id: number;
-            skip_remainder?: boolean;
-        };
-        /**
-         * @example {
-         *       "allows_multi_use": false,
-         *       "created": "2019-12-25T09:00:00Z",
-         *       "creator_id": "ad5bb99f-85bf-47e1-be0d-15e7541c6ad7",
-         *       "deposit_pricing": {
-         *         "charge": 150,
-         *         "price": 5000
-         *       },
-         *       "description": "",
-         *       "id": "77f36253-7a43-4d47-897d-f73dd208e17a",
-         *       "skip_remainder": false
-         *     }
-         */
-        P2PSingleUseListing: {
-            allows_multi_use?: boolean;
-            created?: string;
-            creator_id?: string;
-            creator_role?: string;
-            currency?: string;
-            deposit_pricing?: components["schemas"]["basic.Pricing"];
-            description?: string;
-            disabled?: string;
-            /** Format: int64 */
-            id: number;
-            skip_remainder?: boolean;
         };
         /**
          * @example {
@@ -3407,6 +2418,14 @@ export interface components {
             /** Format: int64 */
             price: number;
         };
+        "basic.ClientTimelines": {
+            /** Format: int64 */
+            complaint_period_seconds?: number;
+            /** Format: int64 */
+            delivery_allowance_seconds?: number;
+            /** Format: int64 */
+            tracking_details_allowance_seconds?: number;
+        };
         "basic.DeliveryDetails": {
             carrier: string;
             city: string;
@@ -3447,25 +2466,6 @@ export interface components {
          * @enum {string}
          */
         "basic.MassUnit": "lb" | "kg";
-        /**
-         * @example {
-         *       "created": "2019-12-25T09:00:00Z",
-         *       "creator_id": "ad5bb99f-85bf-47e1-be0d-15e7541c6ad7",
-         *       "id": "77f36253-7a43-4d47-897d-f73dd208e17a"
-         *     }
-         */
-        "basic.MultiUseListing": {
-            /** Format: date-time */
-            created: string;
-            creator_id: string;
-            creator_role: components["schemas"]["basic.Role"];
-            currency?: string;
-            description?: string;
-            /** Format: date-time */
-            disabled?: string;
-            id: string;
-            pricing?: components["schemas"]["basic.Pricing"];
-        };
         "basic.PickUpDetails": {
             carrier: string;
             city: string;
@@ -3566,25 +2566,6 @@ export interface components {
         "basic.ShippoShippingRatesResponse": {
             rates: components["schemas"]["basic.ShippoRate"][];
             shipment_id: string;
-        };
-        /**
-         * @example {
-         *       "created": "2019-12-25T09:00:00Z",
-         *       "creator_id": "ad5bb99f-85bf-47e1-be0d-15e7541c6ad7",
-         *       "id": "77f36253-7a43-4d47-897d-f73dd208e17a"
-         *     }
-         */
-        "basic.SingleUseListing": {
-            /** Format: date-time */
-            created: string;
-            creator_id: string;
-            creator_role: components["schemas"]["basic.Role"];
-            currency?: string;
-            description?: string;
-            /** Format: date-time */
-            disabled?: string;
-            id: string;
-            pricing?: components["schemas"]["basic.Pricing"];
         };
         "basic.SortCode": {
             account_holder_name: string;
@@ -3749,6 +2730,21 @@ export interface components {
             first: string;
             last: string;
         };
+        "client.ClientCustomization": {
+            button_color_hex?: string;
+            client_id?: string;
+            collect_phone_number?: boolean;
+            /** Format: date-time */
+            created?: string;
+            favicon_url?: string;
+            id?: string;
+            name?: string;
+            protection_fee_label?: string;
+            public_name?: string;
+            text_color_hex?: string;
+            /** Format: date-time */
+            updated?: string;
+        };
         "p2p.Aba": {
             account_number: string;
             bank_name: string;
@@ -3827,6 +2823,10 @@ export interface components {
             payment_method?: string;
             /** Format: int64 */
             price: number;
+        };
+        "p2p.ClientTimelines": {
+            /** Format: int64 */
+            complaint_period_seconds?: number;
         };
         /**
          * @example {
@@ -4215,6 +3215,8 @@ export interface components {
         };
         /** @enum {string} */
         "personal.VerificationStatus": "unset" | "invalid" | "verifying" | "verified_and_verifying" | "verified" | "set";
+        /** @enum {string} */
+        "users.AccessRole": "admin";
         "users.Balances": {
             available: {
                 /** Format: int64 */
@@ -4256,6 +3258,16 @@ export interface components {
             email: string;
             id: string;
         };
+        "users_client.ClientUserWithRoles": {
+            /** @description User email address */
+            email: string;
+            /** @description User full name */
+            full_name: string;
+            /** @description User ID */
+            id: string;
+            /** @description Array of client role names */
+            roles: components["schemas"]["users.AccessRole"][];
+        };
         /**
          * @example {
          *       "email": "test@test.com",
@@ -4266,176 +3278,21 @@ export interface components {
             email: string;
             id: string;
         };
+        "webhook.ClientWebhook": {
+            client_id: string;
+            /** Format: date-time */
+            created: string;
+            id: string;
+            password: string;
+            /** Format: date-time */
+            updated?: string;
+            url: string;
+            username: string;
+        };
     };
     responses: never;
     parameters: never;
     requestBodies: {
-        patchP2PMultiUseListingPatchListingBody: {
-            content: {
-                "application/json": {
-                    /**
-                     * Format: int64
-                     * @description The `charge_calculator_version` value returned from a request to `/p2p/charge`.
-                     */
-                    charge_calculator_version?: number;
-                    currency?: components["schemas"]["Currency"];
-                    /**
-                     * Format: int64
-                     * @description The `charge` value returned from a request to
-                     *     `/p2p/charge`.
-                     */
-                    deposit_charge?: number;
-                    /**
-                     * Format: int64
-                     * @description The deposit price of the goods being sold, in
-                     *     the `currency`'s smallest unit.  The `charge`
-                     *     value should correspond to the Trustap charge
-                     *     created with this price, otherwise this request
-                     *     will fail with a `400` error.
-                     */
-                    deposit_price?: number;
-                    description?: string;
-                    skip_remainder?: boolean;
-                };
-            };
-        };
-        setP2PMultiUseListingPricingCreatePricingBody: {
-            content: {
-                "application/json": {
-                    /**
-                     * Format: int64
-                     * @description The `charge_calculator_version` value returned from a request to `/p2p/charge`.
-                     */
-                    charge_calculator_version: number;
-                    currency: components["schemas"]["Currency"];
-                    /**
-                     * Format: int64
-                     * @description The `charge` value returned from a request to
-                     *     `/p2p/charge`.
-                     */
-                    deposit_charge: number;
-                    /**
-                     * Format: int64
-                     * @description The deposit price of the goods being sold, in
-                     *     the `currency`'s smallest unit.  The `charge`
-                     *     value should correspond to the Trustap charge
-                     *     created with this price, otherwise this request
-                     *     will fail with a `400` error.
-                     */
-                    deposit_price: number;
-                };
-            };
-        };
-        "basic.createMultiUseListingCreateMultiUseListingBody": {
-            content: {
-                "application/json": {
-                    /**
-                     * Format: int64
-                     * @description The `charge` value returned from a request to
-                     *     `/charge`.
-                     */
-                    charge: number;
-                    /**
-                     * Format: int64
-                     * @description The `charge_calculator_version` value returned from a request to `/charge`.
-                     */
-                    charge_calculator_version: number;
-                    /**
-                     * Format: int64
-                     * @description The `charge_seller` value returned from a request to
-                     *     `/charge`.
-                     */
-                    charge_seller?: number;
-                    currency: components["schemas"]["Currency"];
-                    /** @description A description of the goods being sold. */
-                    description: string;
-                    /**
-                     * Format: int64
-                     * @description The price of the goods being sold, in the
-                     *     `currency`'s smallest unit.  The `charge` value
-                     *     should correspond to the Trustap charge created
-                     *     with this price, otherwise this request will
-                     *     fail with a `400` error.
-                     */
-                    price: number;
-                    role: components["schemas"]["basic.Role"];
-                };
-            };
-        };
-        "basic.updateMultiUseListingPatchListingBody": {
-            content: {
-                "application/json": {
-                    /**
-                     * Format: int64
-                     * @description The `charge` value returned from a request to
-                     *     `/charge`.
-                     */
-                    charge?: number;
-                    /**
-                     * Format: int64
-                     * @description The `charge_calculator_version` value returned from a request to `/charge`.
-                     */
-                    charge_calculator_version?: number;
-                    /**
-                     * Format: int64
-                     * @description The `charge_seller` value returned from a request to
-                     *     `/charge`.
-                     */
-                    charge_seller?: number;
-                    currency?: components["schemas"]["Currency"];
-                    description?: string;
-                    /**
-                     * Format: int64
-                     * @description The price of the goods being sold, in the
-                     *     `currency`'s smallest unit.  The `charge` value
-                     *     should correspond to the Trustap charge created
-                     *     with this price, otherwise this request will
-                     *     fail with a `400` error.
-                     */
-                    price?: number;
-                };
-            };
-        };
-        "basic.setMultiUseListingDescriptionDescriptionBody": {
-            content: {
-                "application/json": {
-                    description: string;
-                };
-            };
-        };
-        "basic.setMultiUseListingPricingCreatePricingBody": {
-            content: {
-                "application/json": {
-                    /**
-                     * Format: int64
-                     * @description The `charge` value returned from a request to
-                     *     `/charge`.
-                     */
-                    charge: number;
-                    /**
-                     * Format: int64
-                     * @description The `charge_calculator_version` value returned from a request to `/charge`.
-                     */
-                    charge_calculator_version: number;
-                    /**
-                     * Format: int64
-                     * @description The `charge_seller` value returned from a
-                     *     request to `/charge`.
-                     */
-                    charge_seller?: number;
-                    currency: components["schemas"]["Currency"];
-                    /**
-                     * Format: int64
-                     * @description The price of the goods being sold, in the
-                     *     `currency`'s smallest unit.  The `charge` value
-                     *     should correspond to the Trustap charge created
-                     *     with this price, otherwise this request will
-                     *     fail with a `400` error.
-                     */
-                    price: number;
-                };
-            };
-        };
         "p2p.submitComplaintSubmitComplaintBody": {
             content: {
                 "application/json": {
@@ -4510,13 +3367,7 @@ export interface operations {
                  *     be `/charge?price=1234&currency=usd`.
                  */
                 price: number;
-                /**
-                 * @description When creating transactions from a multi-use listing, the
-                 *     `quantity` parameter can be provided in order to generate a
-                 *     charge for the given price multiplied by the given quantity.
-                 *     See `/multi_use_listings/{listingId}/create_transaction`
-                 *     for more details.
-                 */
+                /** @description Deprecated. */
                 quantity?: number;
                 /**
                  * @description The payment method that will be used to pay for the
@@ -4590,82 +3441,12 @@ export interface operations {
             };
         };
     };
-    "basic_client.getTransactions": {
-        parameters: {
-            query?: {
-                page?: number;
-                page_size?: number;
-            };
-            header?: never;
-            path: {
-                client_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    carrier?: string;
-                    currency?: string;
-                    date_created_from?: string;
-                    date_created_to?: string;
-                    date_funds_released_from?: string;
-                    descr?: string;
-                    exclude_status?: string;
-                    handle_tracking?: boolean;
-                    quantity?: number;
-                    search_by_user_ids?: string[];
-                    sort_by_name?: string;
-                    sort_by_order?: string;
-                    statuses?: string[];
-                    total_price?: string;
-                    tracking_code?: string;
-                    tx_id?: number;
-                };
-            };
-        };
-        responses: {
-            /** @description Returns paginated list of transactions for a client */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.TransactionPage"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *     `code` can be one of the following:
-             *       * `invalid_page`
-             *       * `page_value_too_low`
-             *       * `invalid_page_size`
-             *       * `excessive_page_size`
-             *       * `page_size_value_too_low`
-             *       * `sort_by_incorrect_format`
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic_client.getTransaction": {
+    "basic_client.getTimelinesForClient": {
         parameters: {
             query?: never;
             header?: never;
             path: {
                 client_id: string;
-                transaction_id: number;
             };
             cookie?: never;
         };
@@ -4677,30 +3458,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["basic.Transaction"];
+                    "application/json": components["schemas"]["basic.ClientTimelines"];
                 };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `invalid_id`
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Unauthorized */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
             };
             /** @description Not Found */
             404: {
@@ -4799,62 +3558,6 @@ export interface operations {
                 };
             };
             /** @description Bad Request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-        };
-    };
-    "basic.getCarrierFacilityOptions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                carrier_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    /** @description ISO 3166-1 alpha-2 country code. */
-                    country_code: string;
-                    /**
-                     * @description The type of delivery or collection method we want to get options from.
-                     *     `delivery_type` can be one of the following:
-                     *     * `parcel_locker`
-                     *     * `post_office`
-                     */
-                    delivery_type: string;
-                    /**
-                     * @description Filter text that is used to search available facilities.
-                     *     It can include `City`, `Postal Code` or a string contained within Facility name.
-                     */
-                    search_text: string;
-                };
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.CarrierFacility"][];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *       * `invalid_carrier`
-             *       * `invalid_delivery_type`
-             */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -5015,43 +3718,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["personal.InstantPayoutBalance"];
-                };
-            };
-        };
-    };
-    "basic.createMultiUseListing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: components["requestBodies"]["basic.createMultiUseListingCreateMultiUseListingBody"];
-        responses: {
-            /** @description Created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.MultiUseListing"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `invalid_role`: '' is not a valid role
-             *       * `incorrect_charge`
-             *       * `incorrect_charge_seller`
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
                 };
             };
         };
@@ -5313,41 +3979,6 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["ProfilePayoutStatus"];
                 };
-            };
-        };
-    };
-    "basic.createSingleUseListing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: components["requestBodies"]["basic.createMultiUseListingCreateMultiUseListingBody"];
-        responses: {
-            /** @description Created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.SingleUseListing"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `invalid_role`: '' is not a valid role
-             *       * `incorrect_charge`
-             *       * `incorrect_charge_seller`
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
             };
         };
     };
@@ -5972,333 +4603,6 @@ export interface operations {
             };
         };
     };
-    "basic.getMultiUseListing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.MultiUseListing"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.deleteMultiUseListing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No Content */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.updateMultiUseListing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: components["requestBodies"]["basic.updateMultiUseListingPatchListingBody"];
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.MultiUseListing"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `empty_body`: The request body is empty.
-             *       * `partial_pricing`: When updating a pricing field, all 3 of
-             *         `currency`, `price` and `charge` must be supplied.
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.createTransactionFromMultiUseListing": {
-        parameters: {
-            query?: {
-                quantity?: number;
-                price?: number;
-                charge?: number;
-                payment_method?: string;
-                charge_config?: number;
-            };
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.Transaction"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `listing_is_disabled`
-             *       * `no_listing_currency`: The source listing doesn't
-             *         have a currency.
-             *       * `no_listing_price`: The source listing doesn't
-             *         have pricing.
-             *       * `no_listing_descr`: The source listing doesn't have
-             *         a description.
-             *       * `is_listing_creator`: The current user created this
-             *         listing.
-             *       * `invalid_charge_config`
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.createTransactionWithGuestBuyerFromMultiUseListing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.Transaction"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `listing_is_disabled`
-             *       * `no_listing_currency`: The source listing doesn't
-             *         have a currency.
-             *       * `no_listing_price`: The source listing doesn't
-             *         have pricing.
-             *       * `no_listing_descr`: The source listing doesn't have
-             *         a description.
-             *       * `is_listing_creator`: The current user created this
-             *         listing.
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.disableMultiUseListing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.MultiUseListing"];
-                };
-            };
-            /** @description Not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.enableMultiUseListing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.MultiUseListing"];
-                };
-            };
-            /** @description Not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.setMultiUseListingDescription": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: components["requestBodies"]["basic.setMultiUseListingDescriptionDescriptionBody"];
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.MultiUseListing"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.setMultiUseListingPricing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: components["requestBodies"]["basic.setMultiUseListingPricingCreatePricingBody"];
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.MultiUseListing"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
     "app_notifs.getNotification": {
         parameters: {
             query?: never;
@@ -6416,13 +4720,7 @@ export interface operations {
                  *     is calculated multiplying the `percentage fee` by the `fee_multiplier`.
                  */
                 fee_multiplier?: number;
-                /**
-                 * @description When creating transactions from a multi-use listing, the
-                 *     `quantity` parameter can be provided in order to generate a
-                 *     charge for the given price multiplied by the given quantity.
-                 *     See `/p2p/multi_use_listings/{listingId}/create_transaction`
-                 *     for more details.
-                 */
+                /** @description Deprecated. */
                 quantity?: number;
                 /**
                  * @description The payment method that will be used to pay for the
@@ -6473,80 +4771,12 @@ export interface operations {
             };
         };
     };
-    "p2p_client.getTransactions": {
-        parameters: {
-            query?: {
-                page?: number;
-                page_size?: number;
-            };
-            header?: never;
-            path: {
-                client_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    currency?: string;
-                    date_created_from?: string;
-                    date_created_to?: string;
-                    date_funds_released_from?: string;
-                    descr?: string;
-                    exclude_status?: string;
-                    quantity?: number;
-                    search_by_user_ids?: string[];
-                    skip_remainder?: boolean;
-                    sort_by_name?: string;
-                    sort_by_order?: string;
-                    statuses?: string[];
-                    total_price?: string;
-                    tx_id?: number;
-                };
-            };
-        };
-        responses: {
-            /** @description Returns paginated list of p2p transactions for a client */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["p2p.TransactionPage"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *     `code` can be one of the following:
-             *       * `invalid_page`
-             *       * `page_value_too_low`
-             *       * `invalid_page_size`
-             *       * `excessive_page_size`
-             *       * `page_size_value_too_low`
-             *       * `sort_by_incorrect_format`
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "p2p_client.getTransaction": {
+    "p2p_client.getTimelinesForClient": {
         parameters: {
             query?: never;
             header?: never;
             path: {
                 client_id: string;
-                transaction_id: number;
             };
             cookie?: never;
         };
@@ -6558,30 +4788,8 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["p2p.Transaction"];
+                    "application/json": components["schemas"]["p2p.ClientTimelines"];
                 };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `invalid_id`
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Unauthorized */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
             };
             /** @description Not Found */
             404: {
@@ -6657,154 +4865,6 @@ export interface operations {
              *         * `invalid_role`: '' is not a valid role
              *         * `invalid_image_url`: '' is not a valid image url
              *         * `image_url_too_long`
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    createP2PMultiUseListingWithDetails: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    /**
-                     * Format: int64
-                     * @description The `charge_calculator_version` value returned from a request to `/p2p/charge`.
-                     */
-                    charge_calculator_version: number;
-                    /**
-                     * Format: int64
-                     * @description The `charge_seller` value returned from a request to
-                     *     `/p2p/charge`.
-                     */
-                    charge_seller?: number;
-                    currency: components["schemas"]["Currency"];
-                    /**
-                     * Format: int64
-                     * @description The `charge` value returned from a request to
-                     *     `/p2p/charge`.
-                     */
-                    deposit_charge: number;
-                    /**
-                     * Format: int64
-                     * @description The price of the goods being sold, in the
-                     *     `currency`'s smallest unit.  The `charge` value
-                     *     should correspond to the Trustap charge created
-                     *     with this price, otherwise this request will
-                     *     fail with a `400` error.
-                     */
-                    deposit_price: number;
-                    /** @description A description of the goods being sold. */
-                    description: string;
-                    role: components["schemas"]["basic.Role"];
-                    /**
-                     * @description If `skip_remainder` is `true` then the
-                     *     transaction will move to the "confirm handover"
-                     *     step after the deposit has been accepted.
-                     */
-                    skip_remainder?: boolean;
-                };
-            };
-        };
-        responses: {
-            /** @description Created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["P2PMultiUseListing"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *         * `invalid_role`: '' is not a valid role
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    createP2PSingleUseListingWithDetails: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    /**
-                     * Format: int64
-                     * @description The `charge_calculator_version` value returned from a request to `/p2p/charge`.
-                     */
-                    charge_calculator_version: number;
-                    /**
-                     * Format: int64
-                     * @description The `charge_seller` value returned from a request to
-                     *     `/p2p/charge`.
-                     */
-                    charge_seller?: number;
-                    currency: components["schemas"]["Currency"];
-                    /**
-                     * Format: int64
-                     * @description The `charge` value returned from a request to
-                     *     `/p2p/charge`.
-                     */
-                    deposit_charge: number;
-                    /**
-                     * Format: int64
-                     * @description The deposit price of the goods being sold, in
-                     *     the `currency`'s smallest unit.  The `charge`
-                     *     value should correspond to the Trustap charge
-                     *     created with this price, otherwise this request
-                     *     will fail with a `400` error.
-                     */
-                    deposit_price: number;
-                    /** @description A description of the goods being sold. */
-                    description: string;
-                    role: components["schemas"]["basic.Role"];
-                    /**
-                     * @description If `skip_remainder` is `true` then the
-                     *     transaction will move to the "confirm handover"
-                     *     step after the deposit has been accepted.
-                     */
-                    skip_remainder?: boolean;
-                };
-            };
-        };
-        responses: {
-            /** @description Created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["P2PSingleUseListing"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *         * `invalid_role`: '' is not a valid role
              */
             400: {
                 headers: {
@@ -7126,565 +5186,6 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["Error"];
                 };
-            };
-        };
-    };
-    getP2PMultiUseListing: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["P2PMultiUseListing"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    deleteP2PMultiUseListing: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    patchP2PMultiUseListing: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody: components["requestBodies"]["patchP2PMultiUseListingPatchListingBody"];
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["P2PMultiUseListing"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `empty_body`: The request body is empty.
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    createTransactionFromP2PMultiUseListing: {
-        parameters: {
-            query?: {
-                quantity?: number;
-                price?: number;
-                charge?: number;
-            };
-            header?: never;
-            path: {
-                listingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["p2p.Transaction"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `listing_is_disabled`
-             *       * `is_listing_creator`: The current user created this
-             *         listing.
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    disableP2PMultiUseListing: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["P2PMultiUseListing"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    enableP2PMultiUseListing: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["P2PMultiUseListing"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    setP2PMultiUseListingPricing: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody: components["requestBodies"]["setP2PMultiUseListingPricingCreatePricingBody"];
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["P2PMultiUseListing"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    setP2PMultiUseListingDescription: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody: components["requestBodies"]["basic.setMultiUseListingDescriptionDescriptionBody"];
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["P2PMultiUseListing"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    setP2PMultiUseListingSkipRemainder: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    skip_remainder: boolean;
-                };
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["P2PMultiUseListing"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    getP2PSingleUseListing: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["P2PSingleUseListing"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    deleteP2PSingleUseListing: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    patchP2PSingleUseListing: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody: components["requestBodies"]["patchP2PMultiUseListingPatchListingBody"];
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["P2PSingleUseListing"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `empty_body`: The request body is empty.
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    createTransactionFromP2PSingleUseListing: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["p2p.Transaction"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `listing_is_disabled`
-             *       * `is_listing_creator`: The current user created this
-             *         listing.
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    disableP2PSingleUseListing: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["P2PSingleUseListing"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    enableP2PSingleUseListing: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["P2PSingleUseListing"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    setP2PSingleUseListingPricing: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody: components["requestBodies"]["setP2PMultiUseListingPricingCreatePricingBody"];
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["P2PSingleUseListing"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    setP2PSingleUseListingDescription: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listingId: number;
-            };
-            cookie?: never;
-        };
-        requestBody: components["requestBodies"]["basic.setMultiUseListingDescriptionDescriptionBody"];
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["P2PSingleUseListing"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
             };
         };
     };
@@ -9146,50 +6647,6 @@ export interface operations {
             };
         };
     };
-    "p2p.rejectTransactionByJoinCode": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                join_code: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["p2p.Transaction"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `cannot_reject_own_transaction`
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
     getP2PTransactionByJoinCode: {
         parameters: {
             query?: never;
@@ -9300,326 +6757,6 @@ export interface operations {
             };
         };
     };
-    "basic.getSingleUseListing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.SingleUseListing"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.deleteSingleUseListing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description No Content */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.updateSingleUseListing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: components["requestBodies"]["basic.updateMultiUseListingPatchListingBody"];
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.SingleUseListing"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `empty_body`: The request body is empty.
-             *       * `partial_pricing`: When updating a pricing field, all 3 of
-             *         `currency`, `price` and `charge` must be supplied.
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.createTransactionFromSingleUseListing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.Transaction"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `listing_is_disabled`
-             *       * `no_listing_currency`: The source listing doesn't
-             *         have a currency.
-             *       * `no_listing_price`: The source listing doesn't
-             *         have pricing.
-             *       * `no_listing_descr`: The source listing doesn't have
-             *         a description.
-             *       * `is_listing_creator`: The current user created this
-             *         listing.
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.createTransactionWithGuestBuyerFromSingleUseListing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.Transaction"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `listing_is_disabled`
-             *       * `no_listing_currency`: The source listing doesn't
-             *         have a currency.
-             *       * `no_listing_price`: The source listing doesn't
-             *         have pricing.
-             *       * `no_listing_descr`: The source listing doesn't have
-             *         a description.
-             *       * `is_listing_creator`: The current user created this
-             *         listing.
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.disableSingleUseListing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.SingleUseListing"];
-                };
-            };
-            /** @description Not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.enableSingleUseListing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.SingleUseListing"];
-                };
-            };
-            /** @description Not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.setSingleUseListingDescription": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: components["requestBodies"]["basic.setMultiUseListingDescriptionDescriptionBody"];
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.SingleUseListing"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.setSingleUseListingPricing": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                listing_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: components["requestBodies"]["basic.setMultiUseListingPricingCreatePricingBody"];
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.SingleUseListing"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
     getSupportedCarriers: {
         parameters: {
             query?: never;
@@ -9711,44 +6848,6 @@ export interface operations {
              *
              *       * `join_code_missing`
              */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.rejectTransactionByJoinCode": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                join_code: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.Transaction"];
-                };
-            };
-            /** @description Bad Request */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -9935,68 +7034,6 @@ export interface operations {
              *     `code` can be one of the following:
              *
              *       * `not_seller`
-             */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.acceptListingTransaction": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                transaction_id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.Transaction"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `no_listing`: This transaction wasn't created from a
-             *         listing
-             *       * `already_accepted`
-             *       * `already_rejected`
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /**
-             * @description Forbidden
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `not_creator`
              */
             403: {
                 headers: {
@@ -10324,13 +7361,7 @@ export interface operations {
                  *     be `/charge?price=1234&currency=usd`.
                  */
                 price: number;
-                /**
-                 * @description When creating transactions from a multi-use listing, the
-                 *     `quantity` parameter can be provided in order to generate a
-                 *     charge for the given price multiplied by the given quantity.
-                 *     See `/multi_use_listings/{listingId}/create_transaction`
-                 *     for more details.
-                 */
+                /** @description Deprecated. */
                 quantity?: number;
                 /**
                  * @description The payment method that will be used to pay for the
@@ -10736,70 +7767,6 @@ export interface operations {
             };
         };
     };
-    "basic.setDeliveryPoint": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                transaction_id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    carrier: string;
-                    city: string;
-                    delivery_center_code: string;
-                    /** @enum {string} */
-                    delivery_type: "parcel_locker" | "postal_office";
-                    email: string;
-                    full_name: string;
-                    house_number: string;
-                    house_number_suffix?: string;
-                    phone: string;
-                    postal_code: string;
-                    street: string;
-                };
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.DeliveryDetails"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *     `code` can be one of the following:
-             *       * `empty_join_code`
-             *       * `empty_name`
-             *       * `empty_phone`
-             *       * `empty_email`
-             *       * `empty_street`
-             *       * `empty_house_number`
-             *       * `empty_postal_code`
-             *       * `empty_city`
-             *       * `empty_delivery_center_code`
-             *       * `empty_delivery_type`
-             *       * `empty_carrier`
-             *       * `unsupported_carrier`
-             *       * `unsupported_delivery_type`
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-        };
-    };
     "basic.endComplaintPeriod": {
         parameters: {
             query?: never;
@@ -10968,135 +7935,6 @@ export interface operations {
              *     `code` can be one of the following:
              *
              *       * `not_seller`
-             */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    "basic.setPickUpPoint": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                transaction_id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    carrier: string;
-                    city: string;
-                    /** @enum {string} */
-                    delivery_type: "parcel_locker" | "postal_office";
-                    email: string;
-                    full_name: string;
-                    house_number: string;
-                    house_number_suffix?: string;
-                    phone: string;
-                    pick_up_center_code: string;
-                    postal_code: string;
-                    street: string;
-                };
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.PickUpDetails"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `empty_join_code`
-             *       * `empty_full_name`
-             *       * `empty_phone`
-             *       * `empty_email`
-             *       * `empty_street`
-             *       * `empty_house_number`
-             *       * `empty_postal_code`
-             *       * `empty_city`
-             *       * `empty_pick_up_center_code`
-             *       * `empty_delivery_type`
-             *       * `empty_carrier`
-             *       * `unsupported_carrier`
-             *       * `unsupported_delivery_type`
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-        };
-    };
-    "basic.rejectListingTransaction": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                transaction_id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["basic.Transaction"];
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `no_listing`: This transaction wasn't created from a
-             *         listing
-             *       * `already_accepted`
-             *       * `already_rejected`
-             *       * `second_party_not_joined`
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /**
-             * @description Forbidden
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `not_creator`
              */
             403: {
                 headers: {
@@ -12017,29 +8855,6 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
-            };
-        };
-    };
-    "users_client.getUserByClientID": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                client_id: string;
-                user_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["users_client.User"];
-                };
             };
         };
     };

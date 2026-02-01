@@ -1,251 +1,211 @@
-# @ranwhenparked/trustap-sdk
+# trustap-sdk
 
-A lightweight typed [Trustap API](https://docs.trustap.com/apis/openapi) wrapper built with openapi-typescript + openapi-fetch.
+Type-safe TypeScript SDK for the [Trustap API](https://trustap.com) with webhook validation.
+
+## Overview
+
+Trustap provides escrow and payment protection for peer-to-peer and marketplace transactions. This SDK offers:
+
+- **Type-safe API client** built on [openapi-fetch](https://openapi-ts.dev/openapi-fetch/) with auto-generated types
+- **Webhook validation** using Zod schemas with TypeScript exhaustiveness checking
+- **Transaction state machine** for tracking transaction lifecycle
+- **Dual runtime support** for Node.js and Deno
 
 ## Installation
 
 ```bash
-npm install @ranwhenparked/trustap-sdk
+npm install trustap-sdk
 ```
 
-## Usage
-
-### Path-based client
-
-```ts
-import { createTrustapClient } from "@ranwhenparked/trustap-sdk";
-
-const trustap = createTrustapClient({
-  apiUrl: process.env.TRUSTAP_API_URL!,
-  basicAuth: {
-    username: process.env.TRUSTAP_API_KEY!,
-    password: "", // Trustap basic auth uses API key + empty password
-  },
-});
-
-const { data, error } = await trustap["/users/me/balances"].GET({
-  headers: { Authorization: `Bearer ${accessToken}` },
-});
-
-// Or verb-based via raw
-const { data: d2 } = await trustap.raw.GET("/users/me/balances", {
-  headers: { Authorization: `Bearer ${accessToken}` },
-});
+```bash
+yarn add trustap-sdk
 ```
 
-### Operation ID-based client
+```bash
+pnpm add trustap-sdk
+```
 
-Call API methods directly by their operation ID with full type safety:
+## Quick Start
 
-```ts
-const { data, error } = await trustap["users.getBalances"]();
+```typescript
+import { createTrustapClient, TRUSTAP_BASE_URLS } from "trustap-sdk";
 
-// With path parameters
-const { data: tx } = await trustap["basic_client.getTransaction"]({
-  params: {
-    path: { client_id: "my-client", transaction_id: "123" },
-  },
+const client = createTrustapClient({
+  baseUrl: TRUSTAP_BASE_URLS.production,
+  auth: { type: "apiKey", apiKey: "your-api-key" },
 });
 
-// With query parameters
-const { data: transactions } = await trustap["basic_client.getTransactions"]({
+// Calculate transaction fees
+const { data, error } = await client.GET("/charge", {
   params: {
-    path: { client_id: "my-client" },
-    query: { status: "paid" },
+    query: { price: 10000, currency: "USD" },
   },
 });
 ```
 
 ## Authentication
 
-The SDK supports multiple authentication strategies:
+### API Key (Server-side)
 
-### Basic Auth (Server-to-server)
+Use API key authentication for server-to-server requests:
 
-Configure HTTP Basic auth for server-to-server endpoints:
-
-```ts
-const trustap = createTrustapClient({
-  apiUrl: "https://api.trustap.com",
-  basicAuth: {
-    username: process.env.TRUSTAP_API_KEY!,
-    password: "", // Trustap uses API key + empty password
-  },
+```typescript
+const client = createTrustapClient({
+  auth: { type: "apiKey", apiKey: process.env.TRUSTAP_API_KEY },
 });
 ```
 
-### OAuth2 Access Token
+### OAuth (User-authenticated)
 
-For user-context endpoints, provide a `getAccessToken` callback:
+Use OAuth for requests on behalf of authenticated users:
 
-```ts
-const trustap = createTrustapClient({
-  apiUrl: "https://api.trustap.com",
-  basicAuth: {
-    username: process.env.TRUSTAP_API_KEY!,
-    password: "",
-  },
-  getAccessToken: async () => {
-    // Return the current user's OAuth2 access token
-    return session.accessToken;
-  },
+```typescript
+const client = createTrustapClient({
+  auth: { type: "oauth", accessToken: userAccessToken },
 });
 ```
 
-The SDK automatically selects the correct auth strategy per endpoint based on the OpenAPI spec. For endpoints that support both, it prefers Basic auth for server-to-server calls.
+## Client Usage
 
-### Auth Overrides
+### Standard Client
 
-Override the automatic auth selection for specific endpoints:
+```typescript
+import { createTrustapClient } from "trustap-sdk";
 
-```ts
-const trustap = createTrustapClient({
-  apiUrl: "https://api.trustap.com",
-  basicAuth: { username: apiKey, password: "" },
-  getAccessToken: async () => userAccessToken,
-  authOverrides: {
-    "/charge": "basic",           // Always use Basic auth
-    "/users/me/balances": "oauth2", // Always use OAuth2
-  },
+const client = createTrustapClient({
+  baseUrl: TRUSTAP_BASE_URLS.staging, // or .production
+  auth: { type: "apiKey", apiKey: "..." },
 });
+
+// Fully typed request/response
+const { data, error } = await client.GET("/me/transactions");
 ```
 
-## Webhook Schemas
+### Path-based Client
 
-Validate incoming Trustap webhooks with Zod schemas:
+```typescript
+import { createTrustapPathClient } from "trustap-sdk";
 
-```ts
-import {
-  trustapWebhookEventSchema,
-  type TrustapWebhookEvent,
-} from "@ranwhenparked/trustap-sdk";
+const client = createTrustapPathClient({ /* options */ });
 
-// Parse and validate webhook payload
-const result = trustapWebhookEventSchema.safeParse(req.body);
-if (!result.success) {
-  console.error("Invalid webhook:", result.error);
-  return;
+// Alternative syntax
+const { data } = await client["/me/transactions"].GET();
+```
+
+### Environments
+
+```typescript
+import { TRUSTAP_BASE_URLS } from "trustap-sdk";
+
+TRUSTAP_BASE_URLS.staging    // https://dev.stage.trustap.com/api/v1
+TRUSTAP_BASE_URLS.production // https://dev.trustap.com/api/v1
+```
+
+## Webhook Handling
+
+### Parsing Events
+
+```typescript
+import { trustapWebhookEventSchema } from "trustap-sdk";
+
+async function handleWebhook(req: Request) {
+  const body = await req.json();
+  const result = trustapWebhookEventSchema.safeParse(body);
+
+  if (!result.success) {
+    // Unknown or malformed event - fails loudly, no silent fallbacks
+    console.error("Invalid webhook:", result.error);
+    return;
+  }
+
+  const event = result.data;
+  // event.code is narrowed to specific event types
 }
-
-const event: TrustapWebhookEvent = result.data;
-console.log(event.code); // e.g., "basic_tx.paid"
 ```
 
-### Exhaustive Handler Pattern
+### Type-safe Handlers
 
-Use `createWebhookHandlers` for compile-time exhaustiveness checking:
+Create handlers with compile-time exhaustiveness checking:
 
-```ts
-import {
-  createWebhookHandlers,
-  type TrustapWebhookEvent,
-} from "@ranwhenparked/trustap-sdk";
+```typescript
+import { createOnlineWebhookHandlers, type TrustapWebhookEvent } from "trustap-sdk";
 
-const handlers = createWebhookHandlers({
+const handlers = createOnlineWebhookHandlers({
   "basic_tx.joined": (event) => {
-    console.log("Transaction joined at:", event.target_preview.joined);
+    console.log("Seller joined:", event.target_preview.joined);
   },
   "basic_tx.paid": (event) => {
-    console.log("Transaction paid at:", event.target_preview.paid);
+    console.log("Payment received:", event.target_preview.paid);
   },
-  "basic_tx.rejected": (event) => { /* ... */ },
-  "basic_tx.cancelled": (event) => { /* ... */ },
-  "basic_tx.claimed": (event) => { /* ... */ },
-  "basic_tx.listing_transaction_accepted": (event) => { /* ... */ },
-  "basic_tx.listing_transaction_rejected": (event) => { /* ... */ },
-  "basic_tx.payment_failed": (event) => { /* ... */ },
-  "basic_tx.payment_refunded": (event) => { /* ... */ },
-  "basic_tx.payment_review_flagged": (event) => { /* ... */ },
-  "basic_tx.payment_review_finished": (event) => { /* ... */ },
-  "basic_tx.tracking_details_submission_deadline_extended": (event) => { /* ... */ },
-  "basic_tx.tracked": (event) => { /* ... */ },
-  "basic_tx.delivered": (event) => { /* ... */ },
-  "basic_tx.complained": (event) => { /* ... */ },
-  "basic_tx.complaint_period_ended": (event) => { /* ... */ },
-  "basic_tx.funds_released": (event) => { /* ... */ },
-  "basic_tx.funds_refunded": (event) => { /* ... */ },
+  "basic_tx.tracked": (event) => {
+    console.log("Tracking:", event.target_preview.tracking);
+  },
+  // TypeScript errors if any event type is missing
+  // ... all 18 event types must be handled
 });
 
-// TypeScript will error if any event code is missing from handlers
-
-function handleWebhook(event: TrustapWebhookEvent) {
-  const handler = handlers[event.code];
-  handler(event as never);
+function processEvent(event: TrustapWebhookEvent) {
+  handlers[event.code](event as any);
 }
 ```
 
-### Individual Event Types
+### Switch with Exhaustiveness
 
-Import specific event types for targeted handling:
+```typescript
+import { assertNever, type TrustapWebhookEvent } from "trustap-sdk";
 
-```ts
-import type {
-  BasicTxPaidEvent,
-  BasicTxFundsReleasedEvent,
-} from "@ranwhenparked/trustap-sdk";
+function handleEvent(event: TrustapWebhookEvent) {
+  switch (event.code) {
+    case "basic_tx.joined":
+      return handleJoined(event);
+    case "basic_tx.paid":
+      return handlePaid(event);
+    // ... handle all cases
+    default:
+      assertNever(event); // Compile error if any case is missing
+  }
+}
 ```
 
-## State Machine
+### State Machine
 
 Map webhook events to transaction states:
 
-```ts
-import {
-  mapWebhookToTrustapState,
-  type TrustapTransactionState,
-} from "@ranwhenparked/trustap-sdk";
+```typescript
+import { mapWebhookToOnlineState } from "trustap-sdk";
 
-const state = mapWebhookToTrustapState("basic_tx.paid");
-// state: "paid"
-
-const unknown = mapWebhookToTrustapState("unknown.event");
-// unknown: null
+const state = mapWebhookToOnlineState("basic_tx.paid");
+// Returns: "paid"
 ```
 
-### Available States
+## Subpath Imports
 
-```ts
-type TrustapTransactionState =
-  | "created"
-  | "joined"
-  | "rejected"
-  | "paid"
-  | "cancelled"
-  | "cancelled_with_payment"
-  | "payment_refunded"
-  | "tracked"
-  | "delivered"
-  | "complained"
-  | "complaint_period_ended"
-  | "funds_released";
+Import only what you need:
+
+```typescript
+// Full SDK
+import { createTrustapClient, trustapWebhookEventSchema } from "trustap-sdk";
+
+// Webhooks only (smaller bundle)
+import { trustapWebhookEventSchema, createOnlineWebhookHandlers } from "trustap-sdk/webhooks";
+
+// Types only (no runtime code)
+import type { paths, components } from "trustap-sdk/types";
 ```
 
 ## Deno
 
-For Deno projects, import from the Deno-specific entry point:
+```typescript
+import { createTrustapClient } from "./mod.ts";
 
-```ts
-import { createTrustapClient } from "@ranwhenparked/trustap-sdk/deno";
+// Or from npm
+import { createTrustapClient } from "npm:trustap-sdk";
 ```
 
-## Development
+## API Reference
 
-### Generate types from OpenAPI spec
+This SDK's types are auto-generated from the [Trustap OpenAPI specification](https://docs.trustap.com). For endpoint documentation, see the [Trustap API docs](https://docs.trustap.com).
 
-```bash
-npm run generate
-```
+## License
 
-This pulls the latest OpenAPI schema from `https://docs.trustap.com/apis/trustap-openapi.yaml` and generates:
-
-- `src/schema.d.ts` - TypeScript types for all API paths and operations
-- `src/operations-map.ts` - Mapping of operation IDs to paths/methods
-- `src/security-map.ts` - Security requirements per endpoint
-
-Individual generation scripts:
-
-```bash
-npm run generate:types    # Generate schema.d.ts
-npm run generate:ops      # Generate operations-map.ts
-npm run generate:security # Generate security-map.ts
-```
+ISC

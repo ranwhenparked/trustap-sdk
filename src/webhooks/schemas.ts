@@ -6,7 +6,7 @@
  */
 
 import { z } from "zod/v4";
-import type { TrustapWebhookEventCode } from "./state-machine.ts";
+import type { TrustapOnlineWebhookEventCode } from "./state.ts";
 
 // ============================================================================
 // Shared Sub-Schemas
@@ -252,10 +252,11 @@ export const basicTxPaymentReviewFinishedEventSchema = createEventSchema(
   paidTargetPreviewSchema,
 );
 
-export const basicTxTrackingDetailsSubmissionDeadlineExtendedEventSchema = createEventSchema(
-  "basic_tx.tracking_details_submission_deadline_extended",
-  paidTargetPreviewSchema,
-);
+export const basicTxTrackingDetailsSubmissionDeadlineExtendedEventSchema =
+  createEventSchema(
+    "basic_tx.tracking_details_submission_deadline_extended",
+    paidTargetPreviewSchema,
+  );
 
 export const basicTxTrackedEventSchema = createEventSchema(
   "basic_tx.tracked",
@@ -336,8 +337,8 @@ type WebhookEventHandler<T extends TrustapWebhookEvent> = (
  * Exhaustive handler map type - TypeScript will error if any event is missing.
  * Use this to ensure all webhook events are handled.
  */
-export type TrustapWebhookHandlers = {
-  [K in TrustapWebhookEventCode]: WebhookEventHandler<
+export type TrustapOnlineWebhookHandlers = {
+  [K in TrustapOnlineWebhookEventCode]: WebhookEventHandler<
     Extract<TrustapWebhookEvent, { code: K }>
   >;
 };
@@ -346,15 +347,15 @@ export type TrustapWebhookHandlers = {
  * Helper to create handlers with compile-time exhaustiveness checking.
  *
  * @example
- * const handlers = createWebhookHandlers({
+ * const handlers = createOnlineWebhookHandlers({
  *   "basic_tx.joined": (event) => { console.log(event.target_preview.joined); },
  *   "basic_tx.paid": (event) => { console.log(event.target_preview.paid); },
  *   // ... TypeScript errors if any event code is missing
  * });
  */
-export function createWebhookHandlers(
-  handlers: TrustapWebhookHandlers,
-): TrustapWebhookHandlers {
+export function createOnlineWebhookHandlers(
+  handlers: TrustapOnlineWebhookHandlers,
+): TrustapOnlineWebhookHandlers {
   return handlers;
 }
 
@@ -384,17 +385,39 @@ export type BasicTxJoinedEvent = z.infer<typeof basicTxJoinedEventSchema>;
 export type BasicTxRejectedEvent = z.infer<typeof basicTxRejectedEventSchema>;
 export type BasicTxCancelledEvent = z.infer<typeof basicTxCancelledEventSchema>;
 export type BasicTxClaimedEvent = z.infer<typeof basicTxClaimedEventSchema>;
-export type BasicTxListingTransactionAcceptedEvent = z.infer<typeof basicTxListingTransactionAcceptedEventSchema>;
-export type BasicTxListingTransactionRejectedEvent = z.infer<typeof basicTxListingTransactionRejectedEventSchema>;
-export type BasicTxPaymentFailedEvent = z.infer<typeof basicTxPaymentFailedEventSchema>;
+export type BasicTxListingTransactionAcceptedEvent = z.infer<
+  typeof basicTxListingTransactionAcceptedEventSchema
+>;
+export type BasicTxListingTransactionRejectedEvent = z.infer<
+  typeof basicTxListingTransactionRejectedEventSchema
+>;
+export type BasicTxPaymentFailedEvent = z.infer<
+  typeof basicTxPaymentFailedEventSchema
+>;
 export type BasicTxPaidEvent = z.infer<typeof basicTxPaidEventSchema>;
-export type BasicTxPaymentRefundedEvent = z.infer<typeof basicTxPaymentRefundedEventSchema>;
-export type BasicTxPaymentReviewFlaggedEvent = z.infer<typeof basicTxPaymentReviewFlaggedEventSchema>;
-export type BasicTxPaymentReviewFinishedEvent = z.infer<typeof basicTxPaymentReviewFinishedEventSchema>;
-export type BasicTxTrackingDetailsSubmissionDeadlineExtendedEvent = z.infer<typeof basicTxTrackingDetailsSubmissionDeadlineExtendedEventSchema>;
+export type BasicTxPaymentRefundedEvent = z.infer<
+  typeof basicTxPaymentRefundedEventSchema
+>;
+export type BasicTxPaymentReviewFlaggedEvent = z.infer<
+  typeof basicTxPaymentReviewFlaggedEventSchema
+>;
+export type BasicTxPaymentReviewFinishedEvent = z.infer<
+  typeof basicTxPaymentReviewFinishedEventSchema
+>;
+export type BasicTxTrackingDetailsSubmissionDeadlineExtendedEvent = z.infer<
+  typeof basicTxTrackingDetailsSubmissionDeadlineExtendedEventSchema
+>;
 export type BasicTxTrackedEvent = z.infer<typeof basicTxTrackedEventSchema>;
 export type BasicTxDeliveredEvent = z.infer<typeof basicTxDeliveredEventSchema>;
-export type BasicTxComplainedEvent = z.infer<typeof basicTxComplainedEventSchema>;
-export type BasicTxComplaintPeriodEndedEvent = z.infer<typeof basicTxComplaintPeriodEndedEventSchema>;
-export type BasicTxFundsReleasedEvent = z.infer<typeof basicTxFundsReleasedEventSchema>;
-export type BasicTxFundsRefundedEvent = z.infer<typeof basicTxFundsRefundedEventSchema>;
+export type BasicTxComplainedEvent = z.infer<
+  typeof basicTxComplainedEventSchema
+>;
+export type BasicTxComplaintPeriodEndedEvent = z.infer<
+  typeof basicTxComplaintPeriodEndedEventSchema
+>;
+export type BasicTxFundsReleasedEvent = z.infer<
+  typeof basicTxFundsReleasedEventSchema
+>;
+export type BasicTxFundsRefundedEvent = z.infer<
+  typeof basicTxFundsRefundedEventSchema
+>;
