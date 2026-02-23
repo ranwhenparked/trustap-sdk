@@ -97,7 +97,7 @@ info:
   title: Trustap API
   version: 0.1.0
 paths:
-  /batch/transactions:
+  /api/v1/batch/transactions:
     get:
       description: >
         This endpoint takes a required `ids` parameter that contains a
@@ -158,7 +158,7 @@ paths:
       summary: Get multiple online transactions by their IDs
       tags:
         - Online Transactions
-  /charge:
+  /api/v1/charge:
     get:
       description: |
         This returns the Trustap fee, in the `currency`'s smallest unit,
@@ -257,7 +257,7 @@ paths:
       summary: Get the Trustap fee for an online transaction
       tags:
         - Online Payment
-  /client/supported_registration_countries:
+  /api/v1/client/supported_registration_countries:
     get:
       operationId: client.getSupportedRegistrationCountries
       responses:
@@ -272,7 +272,7 @@ paths:
       summary: Get supported registration countries for the current client
       tags:
         - Clients
-  /clients/{client_id}/timelines:
+  /api/v1/clients/{client_id}/timelines:
     get:
       operationId: basic_client.getTimelinesForClient
       parameters:
@@ -293,7 +293,7 @@ paths:
       summary: Get timelines for the given client
       tags:
         - Clients
-  /guest_users:
+  /api/v1/guest_users:
     post:
       description: >
         This endpoint creates guest user which can be used as the buyer or the
@@ -367,7 +367,7 @@ paths:
       summary: Create a new guest user
       tags:
         - Buyers and Sellers
-  /me/account_session:
+  /api/v1/me/account_session:
     get:
       operationId: personal.getAccountSession
       responses:
@@ -387,7 +387,7 @@ paths:
       summary: Create an account session and retrieve the client secret for it
       tags:
         - Personal
-  /me/balances:
+  /api/v1/me/balances:
     get:
       operationId: users.getBalances
       responses:
@@ -406,7 +406,7 @@ paths:
       summary: Get the balance for the current user in each currency
       tags:
         - Buyers and Sellers
-  /me/debit_account:
+  /api/v1/me/debit_account:
     get:
       operationId: personal.getDebitAccount
       responses:
@@ -466,7 +466,7 @@ paths:
       summary: Set debit account details
       tags:
         - Personal
-  /me/features:
+  /api/v1/me/features:
     get:
       operationId: users.getUserFeatures
       responses:
@@ -485,7 +485,7 @@ paths:
       summary: Get the status enabled/disabled of user's features
       tags:
         - Buyers and Sellers
-  /me/features/instant_payouts:
+  /api/v1/me/features/instant_payouts:
     post:
       operationId: users.setInstantPayouts
       requestBody:
@@ -515,7 +515,7 @@ paths:
       summary: Allow users to turn instant payouts feature on/off
       tags:
         - Buyers and Sellers
-  /me/instant_payout_balance:
+  /api/v1/me/instant_payout_balance:
     get:
       operationId: personal.getInstantPayoutBalance
       responses:
@@ -528,7 +528,7 @@ paths:
       summary: Get instant payout balance
       tags:
         - Personal
-  /me/notifications:
+  /api/v1/me/notifications:
     get:
       operationId: app_notifs.getNotifications
       parameters:
@@ -585,7 +585,7 @@ paths:
       summary: Get the notifications for the logged-in user
       tags:
         - Notifications
-  /me/payout_attempts:
+  /api/v1/me/payout_attempts:
     get:
       description: |
         Payout attempts are returned in reverse chronological order -
@@ -604,7 +604,7 @@ paths:
       summary: Get the payout attempts that have occurred for this account
       tags:
         - Personal
-  /me/personal/additional_identity_document/verification_status:
+  /api/v1/me/personal/additional_identity_document/verification_status:
     get:
       operationId: getAdditionalIdentityDocumentVerificationStatus
       responses:
@@ -619,7 +619,7 @@ paths:
         document
       tags:
         - Personal
-  /me/personal/additional_identity_document_back/verification_status:
+  /api/v1/me/personal/additional_identity_document_back/verification_status:
     get:
       operationId: getAdditionalIdentityDocumentBackVerificationStatus
       responses:
@@ -634,7 +634,7 @@ paths:
         document
       tags:
         - Personal
-  /me/personal/details:
+  /api/v1/me/personal/details:
     get:
       operationId: personal.getDetails
       responses:
@@ -716,7 +716,7 @@ paths:
       summary: Set personal details for the local user
       tags:
         - Personal
-  /me/personal/identity_document/verification_status:
+  /api/v1/me/personal/identity_document/verification_status:
     get:
       operationId: getIdentityDocumentVerificationStatus
       responses:
@@ -731,7 +731,7 @@ paths:
         document
       tags:
         - Personal
-  /me/personal/identity_document_back/verification_status:
+  /api/v1/me/personal/identity_document_back/verification_status:
     get:
       operationId: getIdentityDocumentBackVerificationStatus
       responses:
@@ -746,7 +746,7 @@ paths:
         document
       tags:
         - Personal
-  /me/personal/stripe_publishable_key:
+  /api/v1/me/personal/stripe_publishable_key:
     get:
       description: |
         Returns the Publishable Key for the Stripe Platform
@@ -768,7 +768,7 @@ paths:
         Get the details for the Stripe publishable key the user is linked to
       tags:
         - Personal
-  /me/profile/payout_status:
+  /api/v1/me/profile/payout_status:
     get:
       description: >
         This endpoint requires
@@ -806,7 +806,7 @@ paths:
         Get the status of a user's ability to accept payouts
       tags:
         - Personal
-  /me/stripe_financial_connections/add_account:
+  /api/v1/me/stripe_financial_connections/add_account:
     post:
       operationId: personal.addStripeFinancialConnectionsAccount
       requestBody:
@@ -830,7 +830,7 @@ paths:
       summary: Add a new payout method to the current account using a payment method ID
       tags:
         - Personal
-  /me/stripe_financial_connections/ownership:
+  /api/v1/me/stripe_financial_connections/ownership:
     get:
       operationId: personal.getStripeFinancialConnectionsOwnership
       parameters:
@@ -873,7 +873,7 @@ paths:
         Financial Connections
       tags:
         - Personal
-  /me/stripe_financial_connections/prepare_account:
+  /api/v1/me/stripe_financial_connections/prepare_account:
     post:
       operationId: personal.prepareStripeFinancialConnectionsAccount
       responses:
@@ -896,7 +896,7 @@ paths:
         Connections session
       tags:
         - Personal
-  /me/transactions:
+  /api/v1/me/transactions:
     get:
       description: |
         Transactions are currently sorted by ID.
@@ -1091,7 +1091,7 @@ paths:
       summary: Create a new online transaction
       tags:
         - Online Transactions
-  /me/transactions/create_and_join:
+  /api/v1/me/transactions/create_and_join:
     post:
       description: |
         This endpoint is an optimised call that allows a transaction to
@@ -1228,7 +1228,7 @@ paths:
       summary: Create a new online transaction with both users
       tags:
         - Online Transactions
-  /me/transactions/create_with_guest_user:
+  /api/v1/me/transactions/create_with_guest_user:
     post:
       description: >
         This endpoint is an optimised call that allows a transaction to
@@ -1389,7 +1389,7 @@ paths:
       summary: Create a new online transaction with both users
       tags:
         - Online Transactions
-  /me/verification_method:
+  /api/v1/me/verification_method:
     get:
       operationId: personal.getVerificationMethod
       responses:
@@ -1422,7 +1422,7 @@ paths:
         Create verification method and message if not available
       tags:
         - Personal
-  /me/verification_session:
+  /api/v1/me/verification_session:
     get:
       description: >-
         Offline access is allowed for this endpoint when the user has granted
@@ -1462,7 +1462,7 @@ paths:
         Create verification session and retrieve client secret for it
       tags:
         - Personal
-  /me/verification_session_native:
+  /api/v1/me/verification_session_native:
     get:
       description: >
         Creates verification session for native apps that use Stripe native
@@ -1509,7 +1509,7 @@ paths:
       summary: Create verification session for native apps that use Stripe native SDK
       tags:
         - Personal
-  /me/verification_status:
+  /api/v1/me/verification_status:
     get:
       description: >-
         Offline access is allowed for this endpoint when the user has granted
@@ -1539,7 +1539,7 @@ paths:
         Get verification status of the user
       tags:
         - Personal
-  /notifications/{notification_id}:
+  /api/v1/notifications/{notification_id}:
     get:
       operationId: app_notifs.getNotification
       parameters:
@@ -1561,7 +1561,7 @@ paths:
       summary: Get a notification by its ID
       tags:
         - Notifications
-  /notifications/{notification_id}/mark_as_read:
+  /api/v1/notifications/{notification_id}/mark_as_read:
     post:
       operationId: app_notifs.markNotificationAsRead
       parameters:
@@ -1583,7 +1583,7 @@ paths:
       summary: Mark this notification as read
       tags:
         - Notifications
-  /p2p/batch/transactions:
+  /api/v1/p2p/batch/transactions:
     get:
       description: >
         This endpoint takes a required `ids` parameter that contains a
@@ -1645,7 +1645,7 @@ paths:
       summary: Get multiple face-to-face transactions by their IDs
       tags:
         - F2F Transactions
-  /p2p/charge:
+  /api/v1/p2p/charge:
     get:
       description: |
         This returns the Trustap fee, in the `currency`'s smallest unit,
@@ -1745,7 +1745,7 @@ paths:
       summary: Get the Trustap fee for a face-to-face transaction
       tags:
         - F2F Payment
-  /p2p/clients/{client_id}/timelines:
+  /api/v1/p2p/clients/{client_id}/timelines:
     get:
       operationId: p2p_client.getTimelinesForClient
       parameters:
@@ -1766,9 +1766,9 @@ paths:
       summary: Get timelines for the given client
       tags:
         - Clients
-  /p2p/listings/create_with_seller:
+  /api/v1/p2p/listings/create_with_seller:
     post:
-      operationId: p2p.createWithSeller
+      operationId: p2p.createListingWithSeller
       requestBody:
         content:
           application/json:
@@ -1854,7 +1854,7 @@ paths:
         page url
       tags:
         - Trustap Lite
-  /p2p/me/transactions:
+  /api/v1/p2p/me/transactions:
     get:
       description: |
         Transactions are currently sorted by ID.
@@ -2043,7 +2043,7 @@ paths:
       summary: Create a new face-to-face transaction
       tags:
         - F2F Transactions
-  /p2p/me/transactions/create_and_join:
+  /api/v1/p2p/me/transactions/create_and_join:
     post:
       description: |
         This endpoint is an optimised call that allows a transaction to
@@ -2172,7 +2172,7 @@ paths:
       summary: Create a new face-to-face transaction with both users
       tags:
         - F2F Transactions
-  /p2p/me/transactions/create_with_guest_user:
+  /api/v1/p2p/me/transactions/create_with_guest_user:
     post:
       description: |
         This endpoint is an optimised call that allows a transaction to
@@ -2313,7 +2313,7 @@ paths:
       summary: Create a new face-to-face transaction with both users
       tags:
         - F2F Transactions
-  /p2p/transactions/{transaction_id}:
+  /api/v1/p2p/transactions/{transaction_id}:
     get:
       operationId: p2p.getTransaction
       parameters:
@@ -2395,7 +2395,7 @@ paths:
         face-to-face transaction
       tags:
         - F2F Payment
-  /p2p/transactions/{transaction_id}/accept_complaint:
+  /api/v1/p2p/transactions/{transaction_id}/accept_complaint:
     post:
       operationId: p2p.acceptComplaint
       parameters:
@@ -2427,7 +2427,7 @@ paths:
       summary: Accept a complaint for this face-to-face transaction
       tags:
         - F2F Complaint
-  /p2p/transactions/{transaction_id}/accept_deposit:
+  /api/v1/p2p/transactions/{transaction_id}/accept_deposit:
     post:
       description: >-
         Offline access is allowed for this endpoint when the user has granted
@@ -2483,7 +2483,7 @@ paths:
       summary: Accept the deposit for this face-to-face transaction
       tags:
         - F2F Payment
-  /p2p/transactions/{transaction_id}/accept_deposit_with_guest_seller:
+  /api/v1/p2p/transactions/{transaction_id}/accept_deposit_with_guest_seller:
     post:
       operationId: p2p.acceptDepositWithGuestSeller
       parameters:
@@ -2519,7 +2519,7 @@ paths:
       summary: Accept the deposit for this face-to-face transaction as a guest seller
       tags:
         - F2F Payment
-  /p2p/transactions/{transaction_id}/bank_transfer_details:
+  /api/v1/p2p/transactions/{transaction_id}/bank_transfer_details:
     get:
       operationId: p2p.getBankTransferDetails
       parameters:
@@ -2546,7 +2546,7 @@ paths:
         payment method is `bank_transfer`
       tags:
         - F2F Payment
-  /p2p/transactions/{transaction_id}/billing_details:
+  /api/v1/p2p/transactions/{transaction_id}/billing_details:
     get:
       operationId: p2p.getBillingDetails
       parameters:
@@ -2568,7 +2568,7 @@ paths:
       summary: Get billing details from this p2p transaction
       tags:
         - F2F Buyer/Seller Details
-  /p2p/transactions/{transaction_id}/cancel_with_description:
+  /api/v1/p2p/transactions/{transaction_id}/cancel_with_description:
     post:
       description: |
         If a transaction is cancelled after the deposit has been paid
@@ -2634,7 +2634,7 @@ paths:
       summary: Cancel this face-to-face transaction with a description
       tags:
         - F2F Cancel
-  /p2p/transactions/{transaction_id}/cancel_with_description_with_guest_user:
+  /api/v1/p2p/transactions/{transaction_id}/cancel_with_description_with_guest_user:
     post:
       description: |
         If a transaction is cancelled after the deposit has been paid
@@ -2699,7 +2699,7 @@ paths:
       summary: Cancel this face-to-face transaction with a description with guest user
       tags:
         - F2F Cancel
-  /p2p/transactions/{transaction_id}/claim_for_buyer:
+  /api/v1/p2p/transactions/{transaction_id}/claim_for_buyer:
     post:
       description: >
         This endpoint enables a client to claim a face-to-face transaction on
@@ -2748,7 +2748,7 @@ paths:
       summary: Claim a F2F transaction on behalf of the buyer
       tags:
         - F2F Transactions
-  /p2p/transactions/{transaction_id}/claim_for_seller:
+  /api/v1/p2p/transactions/{transaction_id}/claim_for_seller:
     post:
       description: >
         This endpoint enables a client to claim a face-to-face transaction on
@@ -2788,7 +2788,7 @@ paths:
       summary: Claim a F2F transaction on behalf of the seller
       tags:
         - F2F Transactions
-  /p2p/transactions/{transaction_id}/complain:
+  /api/v1/p2p/transactions/{transaction_id}/complain:
     post:
       description: >-
         Offline access is allowed for this endpoint when the user has granted
@@ -2826,7 +2826,7 @@ paths:
       summary: Submit a complaint for this face-to-face transaction
       tags:
         - F2F Complaint
-  /p2p/transactions/{transaction_id}/complain_with_guest_buyer:
+  /api/v1/p2p/transactions/{transaction_id}/complain_with_guest_buyer:
     post:
       operationId: p2p.submitComplaintWithGuestBuyer
       parameters:
@@ -2860,7 +2860,7 @@ paths:
       summary: Submit a complaint for this face-to-face transaction with a guest buyer
       tags:
         - F2F Complaint
-  /p2p/transactions/{transaction_id}/confirm_handover:
+  /api/v1/p2p/transactions/{transaction_id}/confirm_handover:
     post:
       description: |
         Both parties should confirm the handover for a face-to-face
@@ -2901,7 +2901,7 @@ paths:
       summary: Confirm the handover for this face-to-face transaction
       tags:
         - F2F Handover
-  /p2p/transactions/{transaction_id}/confirm_handover_with_guest_user:
+  /api/v1/p2p/transactions/{transaction_id}/confirm_handover_with_guest_user:
     post:
       description: |
         Both parties should confirm the handover for a face-to-face
@@ -2936,7 +2936,7 @@ paths:
       summary: Confirm the handover for this face-to-face transaction with a guest user
       tags:
         - F2F Handover
-  /p2p/transactions/{transaction_id}/deposit_stripe_client_secret:
+  /api/v1/p2p/transactions/{transaction_id}/deposit_stripe_client_secret:
     get:
       description: >
         This endpoint is used for the asynchronous payment flow using
@@ -2998,7 +2998,7 @@ paths:
         Get the Stripe client secret for this face-to-face transaction
       tags:
         - F2F Payment
-  /p2p/transactions/{transaction_id}/end_complaint_period_with_guest_buyer:
+  /api/v1/p2p/transactions/{transaction_id}/end_complaint_period_with_guest_buyer:
     post:
       operationId: p2p.endComplaintPeriodWithGuestBuyer
       parameters:
@@ -3032,7 +3032,7 @@ paths:
         buyer
       tags:
         - F2F Complaint
-  /p2p/transactions/{transaction_id}/join_with_guest:
+  /api/v1/p2p/transactions/{transaction_id}/join_with_guest:
     post:
       operationId: p2p.joinWithGuest
       parameters:
@@ -3066,7 +3066,7 @@ paths:
       summary: Join the face-to-face transaction as guest user
       tags:
         - F2F Transactions
-  /p2p/transactions/{transaction_id}/metadata:
+  /api/v1/p2p/transactions/{transaction_id}/metadata:
     get:
       operationId: p2p.getTransactionMetadata
       parameters:
@@ -3130,71 +3130,7 @@ paths:
       summary: Set metadata for a face-to-face transaction
       tags:
         - F2F Transactions
-  /p2p/transactions/{transaction_id}/remainder_stripe_client_secret:
-    get:
-      description: >
-        This endpoint is used for the asynchronous payment flow using
-
-        Stripe. The `client_secret` returned from this endpoint should
-
-        be passed to
-
-        [stripe.confirmCardPayment](https://stripe.com/docs/stripe-js/reference#stripe-confirm-card-payment)
-
-        to start the payment process.
-      operationId: p2p.getRemainderStripeClientSecretForTransaction
-      parameters:
-        - in: path
-          name: transaction_id
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                example:
-                  client_secret: '***'
-                properties:
-                  client_secret:
-                    type: string
-                required:
-                  - client_secret
-                type: object
-        '400':
-          description: |
-            Bad Request
-
-            `code` can be one of the following:
-
-              * `missing_pricing`: Pricing details have not yet been
-                added to this transaction.
-              * `no_client_secret`
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: |
-            Forbidden
-
-            `code` can be one of the following:
-
-              * `not_buyer`
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '404':
-          description: Not Found
-      summary: |
-        Get the Stripe client secret for this face-to-face transaction
-      tags:
-        - F2F Buyer/Seller Details
-  /p2p/transactions/{transaction_id}/set_deposit_payment_method:
+  /api/v1/p2p/transactions/{transaction_id}/set_deposit_payment_method:
     post:
       description: >
         Set deposit payment method for face-to-face transaction. Values can be
@@ -3246,7 +3182,7 @@ paths:
       summary: Set deposit payment method for this face-to-face transaction
       tags:
         - F2F Payment
-  /p2p/transactions/{transaction_id}/stripe_publishable_key:
+  /api/v1/p2p/transactions/{transaction_id}/stripe_publishable_key:
     get:
       description: |
         Returns the Publishable Key for the Stripe Platform
@@ -3303,7 +3239,7 @@ paths:
         face-to-face transaction
       tags:
         - F2F Buyer/Seller Details
-  /p2p/transactions/{transactionId}/buyer_details:
+  /api/v1/p2p/transactions/{transactionId}/buyer_details:
     get:
       operationId: getBuyerDetailsFromP2PTransaction
       parameters:
@@ -3325,7 +3261,7 @@ paths:
       summary: Get the details of the buyer from this face-to-face transaction
       tags:
         - F2F Buyer/Seller Details
-  /p2p/transactions/{transactionId}/seller_details:
+  /api/v1/p2p/transactions/{transactionId}/seller_details:
     get:
       operationId: getSellerDetailsFromP2PTransaction
       parameters:
@@ -3347,7 +3283,7 @@ paths:
       summary: Get the details of the seller from this face-to-face transaction
       tags:
         - F2F Buyer/Seller Details
-  /p2p/transactions/{transactionId}/set_price:
+  /api/v1/p2p/transactions/{transactionId}/set_price:
     post:
       description: |
         `price` is the total price of the item, and thus includes the
@@ -3446,7 +3382,7 @@ paths:
       summary: Set the total price for this face-to-face transaction
       tags:
         - F2F Payment
-  /p2p/transactions/{transactionId}/skip_remainder:
+  /api/v1/p2p/transactions/{transactionId}/skip_remainder:
     post:
       description: |
         This will skip the remainder payment of this transaction, and
@@ -3495,7 +3431,7 @@ paths:
       summary: Skip the remainder for this face-to-face transaction
       tags:
         - F2F Payment
-  /p2p/transactions_by_claim_secret/{secret}/claim_as_buyer:
+  /api/v1/p2p/transactions_by_claim_secret/{secret}/claim_as_buyer:
     post:
       description: |
         This endpoint allows a full user to claim a transaction
@@ -3529,7 +3465,7 @@ paths:
       summary: Claim F2F transaction as buyer given a claim secret
       tags:
         - F2F Transactions
-  /p2p/transactions_by_claim_secret/{secret}/claim_as_seller:
+  /api/v1/p2p/transactions_by_claim_secret/{secret}/claim_as_seller:
     post:
       description: |
         This endpoint allows a full user to claim a transaction
@@ -3567,7 +3503,28 @@ paths:
       summary: Claim a F2F transaction as the seller
       tags:
         - F2F Transactions
-  /p2p/transactions_by_join_code/{join_code}/join:
+  /api/v1/p2p/transactions_by_join_code/{join_code}:
+    get:
+      operationId: p2p.getTransactionByJoinCode
+      parameters:
+        - in: path
+          name: join_code
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/p2p.Transaction'
+        '404':
+          description: Not Found
+      summary: Get a face-to-face transaction by its join code
+      tags:
+        - F2F Transactions
+  /api/v1/p2p/transactions_by_join_code/{join_code}/join:
     post:
       description: >-
         This endpoint allows a user to join a transaction provided a join code.
@@ -3609,28 +3566,7 @@ paths:
       summary: Join a face-to-face transaction by its join code
       tags:
         - F2F Transactions
-  /p2p/transactions_by_join_code/{joinCode}:
-    get:
-      operationId: getP2PTransactionByJoinCode
-      parameters:
-        - in: path
-          name: joinCode
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/p2p.Transaction'
-        '404':
-          description: Not Found
-      summary: Get a face-to-face transaction by its join code
-      tags:
-        - F2F Transactions
-  /shippo_shipping_rates:
+  /api/v1/shippo_shipping_rates:
     post:
       description: |
         This returns the list of Shippo shipping rates available
@@ -3800,7 +3736,7 @@ paths:
       summary: Get the list of Shippo shipping rates available
       tags:
         - Online Shipping
-  /supported_carriers:
+  /api/v1/supported_carriers:
     get:
       description: |
         This returns the carriers that are currently supported for
@@ -3836,7 +3772,7 @@ paths:
       summary: Get the supported carriers
       tags:
         - Online Shipping
-  /transactions:
+  /api/v1/transactions:
     get:
       operationId: basic.getTransactionByJoinCode
       parameters:
@@ -3903,7 +3839,7 @@ paths:
       summary: Join an online transaction using a join code
       tags:
         - Online Transactions
-  /transactions/{transaction_id}:
+  /api/v1/transactions/{transaction_id}:
     get:
       operationId: basic.getTransaction
       parameters:
@@ -4013,7 +3949,7 @@ paths:
         transaction
       tags:
         - Online Payment
-  /transactions/{transaction_id}/accept_complaint:
+  /api/v1/transactions/{transaction_id}/accept_complaint:
     post:
       operationId: basic.acceptComplaint
       parameters:
@@ -4059,7 +3995,7 @@ paths:
       summary: Accept complaint for this online transaction
       tags:
         - Online Complaint
-  /transactions/{transaction_id}/accept_payment:
+  /api/v1/transactions/{transaction_id}/accept_payment:
     post:
       description: >
         This endpoint lets the seller accept payment and is accessible only if
@@ -4105,7 +4041,7 @@ paths:
       summary: Enable the seller to accept payment for an online transaction
       tags:
         - Online Payment
-  /transactions/{transaction_id}/accept_payment_with_guest_seller:
+  /api/v1/transactions/{transaction_id}/accept_payment_with_guest_seller:
     post:
       description: |
         This endpoint allows payment acceptance for the seller specified in the
@@ -4154,7 +4090,7 @@ paths:
         online transaction
       tags:
         - Online Payment
-  /transactions/{transaction_id}/bank_transfer_details:
+  /api/v1/transactions/{transaction_id}/bank_transfer_details:
     get:
       operationId: basic.getBankTransferDetails
       parameters:
@@ -4181,7 +4117,7 @@ paths:
         is `bank_transfer`
       tags:
         - Online Payment
-  /transactions/{transaction_id}/billing_details:
+  /api/v1/transactions/{transaction_id}/billing_details:
     get:
       operationId: basic.getBillingDetails
       parameters:
@@ -4203,7 +4139,7 @@ paths:
       summary: Get billing details from this online transaction
       tags:
         - Online Buyer/Seller Details
-  /transactions/{transaction_id}/buyer_details:
+  /api/v1/transactions/{transaction_id}/buyer_details:
     get:
       operationId: basic.getBuyerDetails
       parameters:
@@ -4225,7 +4161,7 @@ paths:
       summary: Get details of the buyer from this online transaction
       tags:
         - Online Buyer/Seller Details
-  /transactions/{transaction_id}/cancel:
+  /api/v1/transactions/{transaction_id}/cancel:
     post:
       description: |
         Transaction can be cancelled until it's paid or if the feature
@@ -4270,7 +4206,7 @@ paths:
       summary: Cancel this online transaction
       tags:
         - Online Cancel
-  /transactions/{transaction_id}/cancel_with_guest_user:
+  /api/v1/transactions/{transaction_id}/cancel_with_guest_user:
     post:
       description: >
         This endpoint cancels a transaction for the user specified in the header
@@ -4325,7 +4261,7 @@ paths:
       summary: Cancel this online transaction with a guest user
       tags:
         - Online Cancel
-  /transactions/{transaction_id}/charge:
+  /api/v1/transactions/{transaction_id}/charge:
     get:
       description: |
         This returns the Trustap fee, in the `currency`'s smallest unit,
@@ -4411,7 +4347,7 @@ paths:
       summary: Get the Trustap fee for an online transaction
       tags:
         - Online Payment
-  /transactions/{transaction_id}/claim_for_buyer:
+  /api/v1/transactions/{transaction_id}/claim_for_buyer:
     post:
       description: >
         This endpoint enables a client to claim an online transaction on behalf
@@ -4450,7 +4386,7 @@ paths:
       summary: Claim online transaction on behalf of the buyer
       tags:
         - Online Transactions
-  /transactions/{transaction_id}/claim_for_seller:
+  /api/v1/transactions/{transaction_id}/claim_for_seller:
     post:
       description: >
         This endpoint enables a client to claim an online transaction on behalf
@@ -4489,7 +4425,7 @@ paths:
       summary: Claim online transactions on behalf of the seller
       tags:
         - Online Transactions
-  /transactions/{transaction_id}/complain_with_description:
+  /api/v1/transactions/{transaction_id}/complain_with_description:
     post:
       operationId: basic.submitComplaintWithDescription
       parameters:
@@ -4543,7 +4479,7 @@ paths:
       summary: Submit a detailed complaint for this online transaction
       tags:
         - Online Complaint
-  /transactions/{transaction_id}/complain_with_guest_buyer:
+  /api/v1/transactions/{transaction_id}/complain_with_guest_buyer:
     post:
       operationId: basic.submitComplaintWithGuestBuyer
       parameters:
@@ -4607,7 +4543,7 @@ paths:
         buyer using `Trustap-User`
       tags:
         - Online Complaint
-  /transactions/{transaction_id}/confirm_delivery:
+  /api/v1/transactions/{transaction_id}/confirm_delivery:
     post:
       description: |
         This endpoint allows the buyer to manually confirm the delivery of the
@@ -4657,7 +4593,7 @@ paths:
       summary: Confirm delivery for this online transaction
       tags:
         - Online Shipping
-  /transactions/{transaction_id}/confirm_delivery_with_guest_buyer:
+  /api/v1/transactions/{transaction_id}/confirm_delivery_with_guest_buyer:
     post:
       description: |
         This endpoint allows the client to manually confirm the delivery
@@ -4714,7 +4650,7 @@ paths:
       summary: Confirm delivery for this online transaction
       tags:
         - Online Shipping
-  /transactions/{transaction_id}/end_complaint_period:
+  /api/v1/transactions/{transaction_id}/end_complaint_period:
     post:
       operationId: basic.endComplaintPeriod
       parameters:
@@ -4763,7 +4699,7 @@ paths:
       summary: End the complaint period for this online transaction
       tags:
         - Online Complaint
-  /transactions/{transaction_id}/extend_tracking_deadline:
+  /api/v1/transactions/{transaction_id}/extend_tracking_deadline:
     post:
       description: |
         This endpoint allows the buyer to extend the tracking details
@@ -4809,7 +4745,7 @@ paths:
       summary: Extend tracking details submission deadline for this online transaction
       tags:
         - Online Shipping
-  /transactions/{transaction_id}/generate_shipment_label:
+  /api/v1/transactions/{transaction_id}/generate_shipment_label:
     post:
       description: |
         This endpoint returns a PDF containing the label for the
@@ -4863,7 +4799,7 @@ paths:
       summary: Generate a shipment label for this online transaction's parcel
       tags:
         - Online Shipping
-  /transactions/{transaction_id}/seller_details:
+  /api/v1/transactions/{transaction_id}/seller_details:
     get:
       operationId: basic.getSellerDetails
       parameters:
@@ -4885,7 +4821,7 @@ paths:
       summary: Get details of the seller from this online transaction
       tags:
         - Online Buyer/Seller Details
-  /transactions/{transaction_id}/set_payment_method:
+  /api/v1/transactions/{transaction_id}/set_payment_method:
     post:
       description: |
         Different payment methods incur different rates, so the payment
@@ -4987,7 +4923,7 @@ paths:
         Set the payment method to be used for this online transaction
       tags:
         - Online Payment
-  /transactions/{transaction_id}/shipping_details:
+  /api/v1/transactions/{transaction_id}/shipping_details:
     get:
       operationId: basic.getShippingDetailsFromTransaction
       parameters:
@@ -5075,7 +5011,7 @@ paths:
       summary: Post the shipping details of the buyer from this online transaction
       tags:
         - Online Shipping
-  /transactions/{transaction_id}/shippo_address:
+  /api/v1/transactions/{transaction_id}/shippo_address:
     post:
       operationId: basic.setShippoAddress
       parameters:
@@ -5148,7 +5084,7 @@ paths:
       summary: Set the sender's or recipient's address for Shippo shipment
       tags:
         - Online Shipping
-  /transactions/{transaction_id}/shippo_customs_declaration:
+  /api/v1/transactions/{transaction_id}/shippo_customs_declaration:
     post:
       operationId: basic.setShippoCustomsDeclaration
       parameters:
@@ -5234,7 +5170,7 @@ paths:
       summary: Send a customs declaration for this online transaction's shipment
       tags:
         - Online Shipping
-  /transactions/{transaction_id}/shippo_parcel_details:
+  /api/v1/transactions/{transaction_id}/shippo_parcel_details:
     post:
       operationId: basic.setShippoParcelDetails
       parameters:
@@ -5307,7 +5243,7 @@ paths:
       summary: Set Shippo parcel details for this online transaction
       tags:
         - Online Shipping
-  /transactions/{transaction_id}/shippo_shipping_label:
+  /api/v1/transactions/{transaction_id}/shippo_shipping_label:
     get:
       operationId: basic.getShippoShippingLabel
       parameters:
@@ -5336,7 +5272,7 @@ paths:
       summary: Get Shippo generated label details for this online transaction
       tags:
         - Online Shipping
-  /transactions/{transaction_id}/shippo_shipping_rate:
+  /api/v1/transactions/{transaction_id}/shippo_shipping_rate:
     post:
       description: >
         Set Shippo shipping rate for the transaction.
@@ -5385,7 +5321,7 @@ paths:
       summary: Set Shippo shipping rate for this online transaction
       tags:
         - Online Shipping
-  /transactions/{transaction_id}/shippo_shipping_rates:
+  /api/v1/transactions/{transaction_id}/shippo_shipping_rates:
     get:
       operationId: basic.getShippoShippingRatesForTransaction
       parameters:
@@ -5420,7 +5356,7 @@ paths:
         and parcel details
       tags:
         - Online Shipping
-  /transactions/{transaction_id}/stripe_client_secret:
+  /api/v1/transactions/{transaction_id}/stripe_client_secret:
     get:
       description: >
         This endpoint is used for the asynchronous payment flow using
@@ -5484,7 +5420,7 @@ paths:
         Get the Stripe client secret for this online transaction
       tags:
         - Online Buyer/Seller Details
-  /transactions/{transaction_id}/stripe_publishable_key:
+  /api/v1/transactions/{transaction_id}/stripe_publishable_key:
     get:
       description: |
         Returns the Publishable Key for the Stripe Platform
@@ -5541,7 +5477,7 @@ paths:
         online transaction
       tags:
         - Online Buyer/Seller Details
-  /transactions/{transaction_id}/submit_order_issue:
+  /api/v1/transactions/{transaction_id}/submit_order_issue:
     post:
       operationId: basic.submitOrderIssue
       parameters:
@@ -5599,7 +5535,7 @@ paths:
       summary: Submit a detailed order issue for this online transaction
       tags:
         - Online Transactions
-  /transactions/{transaction_id}/track:
+  /api/v1/transactions/{transaction_id}/track:
     post:
       description: |
         After the tracking information has been submitted then the state
@@ -5659,7 +5595,7 @@ paths:
       summary: Set postal tracking details for this online transaction
       tags:
         - Online Shipping
-  /transactions/{transaction_id}/track_with_guest_seller:
+  /api/v1/transactions/{transaction_id}/track_with_guest_seller:
     post:
       description: |
         Add tracking details for the guest seller specified
@@ -5722,7 +5658,7 @@ paths:
       summary: Set postal tracking details for this online transaction
       tags:
         - Online Shipping
-  /transactions_by_claim_secret/{secret}/claim_as_buyer:
+  /api/v1/transactions_by_claim_secret/{secret}/claim_as_buyer:
     post:
       description: |
         This endpoint allows a full user to claim for a transaction
@@ -5755,7 +5691,7 @@ paths:
       summary: Claim for an online transaction as buyer given a claim secret
       tags:
         - Online Transactions
-  /transactions_by_claim_secret/{secret}/claim_as_seller:
+  /api/v1/transactions_by_claim_secret/{secret}/claim_as_seller:
     post:
       description: |
         This endpoint allows a full user to claim a transaction
@@ -5880,7 +5816,7 @@ x-tagGroups:
       - F2F Multi-use Listings
       - F2F Single-use Listings
 servers:
-  - url: https://dev.stage.trustap.com/api/v1
+  - url: https://dev.stage.trustap.com
 components:
   requestBodies:
     p2p.submitComplaintSubmitComplaintBody:
@@ -6295,10 +6231,12 @@ components:
     basic.Charge:
       example:
         charge: 340
+        charge_buyer_client: 0
         charge_calculator_version: 5
         charge_config: 1
         charge_postage_buyer: 1000
         charge_seller: 0
+        charge_seller_client: 0
         currency: eur
         payment_method: card
         price: 10000
@@ -6309,6 +6247,12 @@ components:
             smallest unit, for a queried amount. See [the Stripe
             documentation](https://stripe.com/docs/currencies#zero-decimal)
             for more details.
+          format: int64
+          type: integer
+        charge_buyer_client:
+          description: |
+            The portion of the buyer's fee that is attributed to the client,
+            in the `currency`'s smallest unit.
           format: int64
           type: integer
         charge_calculator_version:
@@ -6357,6 +6301,12 @@ components:
             for more details.
           format: int64
           type: integer
+        charge_seller_client:
+          description: |
+            The portion of the seller's fee that is attributed to the client,
+            in the `currency`'s smallest unit.
+          format: int64
+          type: integer
         currency:
           type: string
         payment_method:
@@ -6368,6 +6318,8 @@ components:
         - currency
         - charge
         - charge_seller
+        - charge_buyer_client
+        - charge_seller_client
         - charge_calculator_version
         - price
       type: object
@@ -6511,10 +6463,16 @@ components:
         charge:
           format: int64
           type: integer
+        charge_buyer_client:
+          format: int64
+          type: integer
         charge_international_payment:
           format: int64
           type: integer
         charge_seller:
+          format: int64
+          type: integer
+        charge_seller_client:
           format: int64
           type: integer
         price:
@@ -6524,6 +6482,8 @@ components:
         - price
         - charge
         - charge_seller
+        - charge_buyer_client
+        - charge_seller_client
       type: object
     basic.Refund:
       properties:
@@ -6761,6 +6721,9 @@ components:
         charge:
           format: int64
           type: integer
+        charge_buyer_client:
+          format: int64
+          type: integer
         charge_international_payment:
           format: int64
           type: integer
@@ -6771,6 +6734,9 @@ components:
           format: int64
           type: integer
         charge_seller:
+          format: int64
+          type: integer
+        charge_seller_client:
           format: int64
           type: integer
         claimed_by_buyer:
@@ -6906,6 +6872,8 @@ components:
         - price
         - charge
         - charge_seller
+        - charge_buyer_client
+        - charge_seller_client
         - description
         - quantity
         - created
@@ -7027,9 +6995,11 @@ components:
     p2p.Charge:
       example:
         charge: 78
+        charge_buyer_client: 0
         charge_calculator_version: 5
         charge_config: 1
         charge_seller: 0
+        charge_seller_client: 0
         currency: eur
         payment_method: card
         price: 1234
@@ -7040,6 +7010,12 @@ components:
             smallest unit, for a queried amount. See [the Stripe
             documentation](https://stripe.com/docs/currencies#zero-decimal)
             for more details.
+          format: int64
+          type: integer
+        charge_buyer_client:
+          description: |
+            The portion of the buyer's fee that is attributed to the client,
+            in the `currency`'s smallest unit.
           format: int64
           type: integer
         charge_calculator_version:
@@ -7076,6 +7052,12 @@ components:
             for more details.
           format: int64
           type: integer
+        charge_seller_client:
+          description: |
+            The portion of the seller's fee that is attributed to the client,
+            in the `currency`'s smallest unit.
+          format: int64
+          type: integer
         currency:
           type: string
         payment_method:
@@ -7087,6 +7069,8 @@ components:
         - currency
         - charge
         - charge_seller
+        - charge_buyer_client
+        - charge_seller_client
         - charge_calculator_version
         - price
       type: object
@@ -7197,10 +7181,16 @@ components:
         charge:
           format: int64
           type: integer
+        charge_buyer_client:
+          format: int64
+          type: integer
         charge_international_payment:
           format: int64
           type: integer
         charge_seller:
+          format: int64
+          type: integer
+        charge_seller_client:
           format: int64
           type: integer
         deposit_fee_multiplier:
@@ -7212,6 +7202,8 @@ components:
         - price
         - charge
         - charge_seller
+        - charge_buyer_client
+        - charge_seller_client
       type: object
     p2p.Refund:
       properties:
@@ -7867,6 +7859,7 @@ components:
     users.AccessRole:
       enum:
         - admin
+        - reader
       type: string
     users.Balances:
       properties:
