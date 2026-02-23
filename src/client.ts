@@ -8,8 +8,8 @@ import createClient, {
 import type { paths } from "./generated/types.ts";
 
 export const TRUSTAP_BASE_URLS = {
-  staging: "https://dev.stage.trustap.com/api/v1",
-  production: "https://dev.trustap.com/api/v1",
+  staging: "https://dev.stage.trustap.com",
+  production: "https://dev.trustap.com",
 } as const;
 
 export type TrustapClient = Client<paths>;
