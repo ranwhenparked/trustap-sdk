@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/batch/transactions": {
+    "/api/v1/batch/transactions": {
         parameters: {
             query?: never;
             header?: never;
@@ -36,7 +36,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/charge": {
+    "/api/v1/charge": {
         parameters: {
             query?: never;
             header?: never;
@@ -60,7 +60,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/client/supported_registration_countries": {
+    "/api/v1/client/supported_registration_countries": {
         parameters: {
             query?: never;
             header?: never;
@@ -77,7 +77,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/clients/{client_id}/timelines": {
+    "/api/v1/clients/{client_id}/timelines": {
         parameters: {
             query?: never;
             header?: never;
@@ -94,7 +94,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/guest_users": {
+    "/api/v1/guest_users": {
         parameters: {
             query?: never;
             header?: never;
@@ -119,7 +119,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/account_session": {
+    "/api/v1/me/account_session": {
         parameters: {
             query?: never;
             header?: never;
@@ -136,7 +136,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/balances": {
+    "/api/v1/me/balances": {
         parameters: {
             query?: never;
             header?: never;
@@ -153,7 +153,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/debit_account": {
+    "/api/v1/me/debit_account": {
         parameters: {
             query?: never;
             header?: never;
@@ -171,7 +171,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/features": {
+    "/api/v1/me/features": {
         parameters: {
             query?: never;
             header?: never;
@@ -188,7 +188,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/features/instant_payouts": {
+    "/api/v1/me/features/instant_payouts": {
         parameters: {
             query?: never;
             header?: never;
@@ -205,7 +205,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/instant_payout_balance": {
+    "/api/v1/me/instant_payout_balance": {
         parameters: {
             query?: never;
             header?: never;
@@ -222,7 +222,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/notifications": {
+    "/api/v1/me/notifications": {
         parameters: {
             query?: never;
             header?: never;
@@ -239,7 +239,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/payout_attempts": {
+    "/api/v1/me/payout_attempts": {
         parameters: {
             query?: never;
             header?: never;
@@ -261,7 +261,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/personal/additional_identity_document/verification_status": {
+    "/api/v1/me/personal/additional_identity_document/verification_status": {
         parameters: {
             query?: never;
             header?: never;
@@ -278,7 +278,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/personal/additional_identity_document_back/verification_status": {
+    "/api/v1/me/personal/additional_identity_document_back/verification_status": {
         parameters: {
             query?: never;
             header?: never;
@@ -295,7 +295,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/personal/details": {
+    "/api/v1/me/personal/details": {
         parameters: {
             query?: never;
             header?: never;
@@ -313,7 +313,7 @@ export interface paths {
         patch: operations["personal.setDetails"];
         trace?: never;
     };
-    "/me/personal/identity_document/verification_status": {
+    "/api/v1/me/personal/identity_document/verification_status": {
         parameters: {
             query?: never;
             header?: never;
@@ -330,7 +330,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/personal/identity_document_back/verification_status": {
+    "/api/v1/me/personal/identity_document_back/verification_status": {
         parameters: {
             query?: never;
             header?: never;
@@ -347,7 +347,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/personal/stripe_publishable_key": {
+    "/api/v1/me/personal/stripe_publishable_key": {
         parameters: {
             query?: never;
             header?: never;
@@ -368,7 +368,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/profile/payout_status": {
+    "/api/v1/me/profile/payout_status": {
         parameters: {
             query?: never;
             header?: never;
@@ -392,7 +392,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/stripe_financial_connections/add_account": {
+    "/api/v1/me/stripe_financial_connections/add_account": {
         parameters: {
             query?: never;
             header?: never;
@@ -409,7 +409,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/stripe_financial_connections/ownership": {
+    "/api/v1/me/stripe_financial_connections/ownership": {
         parameters: {
             query?: never;
             header?: never;
@@ -426,7 +426,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/stripe_financial_connections/prepare_account": {
+    "/api/v1/me/stripe_financial_connections/prepare_account": {
         parameters: {
             query?: never;
             header?: never;
@@ -446,7 +446,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/transactions": {
+    "/api/v1/me/transactions": {
         parameters: {
             query?: never;
             header?: never;
@@ -471,7 +471,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/transactions/create_and_join": {
+    "/api/v1/me/transactions/create_and_join": {
         parameters: {
             query?: never;
             header?: never;
@@ -495,7 +495,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/transactions/create_with_guest_user": {
+    "/api/v1/me/transactions/create_with_guest_user": {
         parameters: {
             query?: never;
             header?: never;
@@ -520,7 +520,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/verification_method": {
+    "/api/v1/me/verification_method": {
         parameters: {
             query?: never;
             header?: never;
@@ -537,7 +537,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/verification_session": {
+    "/api/v1/me/verification_session": {
         parameters: {
             query?: never;
             header?: never;
@@ -557,7 +557,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/verification_session_native": {
+    "/api/v1/me/verification_session_native": {
         parameters: {
             query?: never;
             header?: never;
@@ -580,7 +580,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/me/verification_status": {
+    "/api/v1/me/verification_status": {
         parameters: {
             query?: never;
             header?: never;
@@ -600,7 +600,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/notifications/{notification_id}": {
+    "/api/v1/notifications/{notification_id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -617,7 +617,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/notifications/{notification_id}/mark_as_read": {
+    "/api/v1/notifications/{notification_id}/mark_as_read": {
         parameters: {
             query?: never;
             header?: never;
@@ -634,7 +634,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/batch/transactions": {
+    "/api/v1/p2p/batch/transactions": {
         parameters: {
             query?: never;
             header?: never;
@@ -667,7 +667,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/charge": {
+    "/api/v1/p2p/charge": {
         parameters: {
             query?: never;
             header?: never;
@@ -691,7 +691,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/clients/{client_id}/timelines": {
+    "/api/v1/p2p/clients/{client_id}/timelines": {
         parameters: {
             query?: never;
             header?: never;
@@ -708,7 +708,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/listings/create_with_seller": {
+    "/api/v1/p2p/listings/create_with_seller": {
         parameters: {
             query?: never;
             header?: never;
@@ -721,14 +721,14 @@ export interface paths {
          * Creates a transaction with guest seller and returns actions
          *     page url
          */
-        post: operations["p2p.createWithSeller"];
+        post: operations["p2p.createListingWithSeller"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/p2p/me/transactions": {
+    "/api/v1/p2p/me/transactions": {
         parameters: {
             query?: never;
             header?: never;
@@ -757,7 +757,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/me/transactions/create_and_join": {
+    "/api/v1/p2p/me/transactions/create_and_join": {
         parameters: {
             query?: never;
             header?: never;
@@ -785,7 +785,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/me/transactions/create_with_guest_user": {
+    "/api/v1/p2p/me/transactions/create_with_guest_user": {
         parameters: {
             query?: never;
             header?: never;
@@ -810,7 +810,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}": {
+    "/api/v1/p2p/transactions/{transaction_id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -828,7 +828,7 @@ export interface paths {
         patch: operations["updateF2fTransaction"];
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/accept_complaint": {
+    "/api/v1/p2p/transactions/{transaction_id}/accept_complaint": {
         parameters: {
             query?: never;
             header?: never;
@@ -845,7 +845,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/accept_deposit": {
+    "/api/v1/p2p/transactions/{transaction_id}/accept_deposit": {
         parameters: {
             query?: never;
             header?: never;
@@ -865,7 +865,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/accept_deposit_with_guest_seller": {
+    "/api/v1/p2p/transactions/{transaction_id}/accept_deposit_with_guest_seller": {
         parameters: {
             query?: never;
             header?: never;
@@ -882,7 +882,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/bank_transfer_details": {
+    "/api/v1/p2p/transactions/{transaction_id}/bank_transfer_details": {
         parameters: {
             query?: never;
             header?: never;
@@ -899,7 +899,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/billing_details": {
+    "/api/v1/p2p/transactions/{transaction_id}/billing_details": {
         parameters: {
             query?: never;
             header?: never;
@@ -916,7 +916,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/cancel_with_description": {
+    "/api/v1/p2p/transactions/{transaction_id}/cancel_with_description": {
         parameters: {
             query?: never;
             header?: never;
@@ -941,7 +941,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/cancel_with_description_with_guest_user": {
+    "/api/v1/p2p/transactions/{transaction_id}/cancel_with_description_with_guest_user": {
         parameters: {
             query?: never;
             header?: never;
@@ -963,7 +963,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/claim_for_buyer": {
+    "/api/v1/p2p/transactions/{transaction_id}/claim_for_buyer": {
         parameters: {
             query?: never;
             header?: never;
@@ -984,7 +984,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/claim_for_seller": {
+    "/api/v1/p2p/transactions/{transaction_id}/claim_for_seller": {
         parameters: {
             query?: never;
             header?: never;
@@ -1005,7 +1005,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/complain": {
+    "/api/v1/p2p/transactions/{transaction_id}/complain": {
         parameters: {
             query?: never;
             header?: never;
@@ -1025,7 +1025,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/complain_with_guest_buyer": {
+    "/api/v1/p2p/transactions/{transaction_id}/complain_with_guest_buyer": {
         parameters: {
             query?: never;
             header?: never;
@@ -1042,7 +1042,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/confirm_handover": {
+    "/api/v1/p2p/transactions/{transaction_id}/confirm_handover": {
         parameters: {
             query?: never;
             header?: never;
@@ -1067,7 +1067,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/confirm_handover_with_guest_user": {
+    "/api/v1/p2p/transactions/{transaction_id}/confirm_handover_with_guest_user": {
         parameters: {
             query?: never;
             header?: never;
@@ -1088,7 +1088,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/deposit_stripe_client_secret": {
+    "/api/v1/p2p/transactions/{transaction_id}/deposit_stripe_client_secret": {
         parameters: {
             query?: never;
             header?: never;
@@ -1112,7 +1112,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/end_complaint_period_with_guest_buyer": {
+    "/api/v1/p2p/transactions/{transaction_id}/end_complaint_period_with_guest_buyer": {
         parameters: {
             query?: never;
             header?: never;
@@ -1129,7 +1129,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/join_with_guest": {
+    "/api/v1/p2p/transactions/{transaction_id}/join_with_guest": {
         parameters: {
             query?: never;
             header?: never;
@@ -1146,7 +1146,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/metadata": {
+    "/api/v1/p2p/transactions/{transaction_id}/metadata": {
         parameters: {
             query?: never;
             header?: never;
@@ -1164,31 +1164,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/remainder_stripe_client_secret": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get the Stripe client secret for this face-to-face transaction
-         * @description This endpoint is used for the asynchronous payment flow using
-         *     Stripe. The `client_secret` returned from this endpoint should
-         *     be passed to
-         *     [stripe.confirmCardPayment](https://stripe.com/docs/stripe-js/reference#stripe-confirm-card-payment)
-         *     to start the payment process.
-         */
-        get: operations["p2p.getRemainderStripeClientSecretForTransaction"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/p2p/transactions/{transaction_id}/set_deposit_payment_method": {
+    "/api/v1/p2p/transactions/{transaction_id}/set_deposit_payment_method": {
         parameters: {
             query?: never;
             header?: never;
@@ -1209,7 +1185,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transaction_id}/stripe_publishable_key": {
+    "/api/v1/p2p/transactions/{transaction_id}/stripe_publishable_key": {
         parameters: {
             query?: never;
             header?: never;
@@ -1230,7 +1206,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transactionId}/buyer_details": {
+    "/api/v1/p2p/transactions/{transactionId}/buyer_details": {
         parameters: {
             query?: never;
             header?: never;
@@ -1247,7 +1223,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transactionId}/seller_details": {
+    "/api/v1/p2p/transactions/{transactionId}/seller_details": {
         parameters: {
             query?: never;
             header?: never;
@@ -1264,7 +1240,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transactionId}/set_price": {
+    "/api/v1/p2p/transactions/{transactionId}/set_price": {
         parameters: {
             query?: never;
             header?: never;
@@ -1292,7 +1268,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions/{transactionId}/skip_remainder": {
+    "/api/v1/p2p/transactions/{transactionId}/skip_remainder": {
         parameters: {
             query?: never;
             header?: never;
@@ -1315,7 +1291,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions_by_claim_secret/{secret}/claim_as_buyer": {
+    "/api/v1/p2p/transactions_by_claim_secret/{secret}/claim_as_buyer": {
         parameters: {
             query?: never;
             header?: never;
@@ -1336,7 +1312,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions_by_claim_secret/{secret}/claim_as_seller": {
+    "/api/v1/p2p/transactions_by_claim_secret/{secret}/claim_as_seller": {
         parameters: {
             query?: never;
             header?: never;
@@ -1357,7 +1333,24 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions_by_join_code/{join_code}/join": {
+    "/api/v1/p2p/transactions_by_join_code/{join_code}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a face-to-face transaction by its join code */
+        get: operations["p2p.getTransactionByJoinCode"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/p2p/transactions_by_join_code/{join_code}/join": {
         parameters: {
             query?: never;
             header?: never;
@@ -1377,24 +1370,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/p2p/transactions_by_join_code/{joinCode}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get a face-to-face transaction by its join code */
-        get: operations["getP2PTransactionByJoinCode"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/shippo_shipping_rates": {
+    "/api/v1/shippo_shipping_rates": {
         parameters: {
             query?: never;
             header?: never;
@@ -1416,7 +1392,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/supported_carriers": {
+    "/api/v1/supported_carriers": {
         parameters: {
             query?: never;
             header?: never;
@@ -1443,7 +1419,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions": {
+    "/api/v1/transactions": {
         parameters: {
             query?: never;
             header?: never;
@@ -1466,7 +1442,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}": {
+    "/api/v1/transactions/{transaction_id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1484,7 +1460,7 @@ export interface paths {
         patch: operations["updateTransaction"];
         trace?: never;
     };
-    "/transactions/{transaction_id}/accept_complaint": {
+    "/api/v1/transactions/{transaction_id}/accept_complaint": {
         parameters: {
             query?: never;
             header?: never;
@@ -1501,7 +1477,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/accept_payment": {
+    "/api/v1/transactions/{transaction_id}/accept_payment": {
         parameters: {
             query?: never;
             header?: never;
@@ -1525,7 +1501,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/accept_payment_with_guest_seller": {
+    "/api/v1/transactions/{transaction_id}/accept_payment_with_guest_seller": {
         parameters: {
             query?: never;
             header?: never;
@@ -1546,7 +1522,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/bank_transfer_details": {
+    "/api/v1/transactions/{transaction_id}/bank_transfer_details": {
         parameters: {
             query?: never;
             header?: never;
@@ -1563,7 +1539,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/billing_details": {
+    "/api/v1/transactions/{transaction_id}/billing_details": {
         parameters: {
             query?: never;
             header?: never;
@@ -1580,7 +1556,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/buyer_details": {
+    "/api/v1/transactions/{transaction_id}/buyer_details": {
         parameters: {
             query?: never;
             header?: never;
@@ -1597,7 +1573,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/cancel": {
+    "/api/v1/transactions/{transaction_id}/cancel": {
         parameters: {
             query?: never;
             header?: never;
@@ -1622,7 +1598,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/cancel_with_guest_user": {
+    "/api/v1/transactions/{transaction_id}/cancel_with_guest_user": {
         parameters: {
             query?: never;
             header?: never;
@@ -1645,7 +1621,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/charge": {
+    "/api/v1/transactions/{transaction_id}/charge": {
         parameters: {
             query?: never;
             header?: never;
@@ -1669,7 +1645,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/claim_for_buyer": {
+    "/api/v1/transactions/{transaction_id}/claim_for_buyer": {
         parameters: {
             query?: never;
             header?: never;
@@ -1690,7 +1666,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/claim_for_seller": {
+    "/api/v1/transactions/{transaction_id}/claim_for_seller": {
         parameters: {
             query?: never;
             header?: never;
@@ -1711,7 +1687,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/complain_with_description": {
+    "/api/v1/transactions/{transaction_id}/complain_with_description": {
         parameters: {
             query?: never;
             header?: never;
@@ -1728,7 +1704,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/complain_with_guest_buyer": {
+    "/api/v1/transactions/{transaction_id}/complain_with_guest_buyer": {
         parameters: {
             query?: never;
             header?: never;
@@ -1745,7 +1721,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/confirm_delivery": {
+    "/api/v1/transactions/{transaction_id}/confirm_delivery": {
         parameters: {
             query?: never;
             header?: never;
@@ -1767,7 +1743,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/confirm_delivery_with_guest_buyer": {
+    "/api/v1/transactions/{transaction_id}/confirm_delivery_with_guest_buyer": {
         parameters: {
             query?: never;
             header?: never;
@@ -1788,7 +1764,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/end_complaint_period": {
+    "/api/v1/transactions/{transaction_id}/end_complaint_period": {
         parameters: {
             query?: never;
             header?: never;
@@ -1805,7 +1781,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/extend_tracking_deadline": {
+    "/api/v1/transactions/{transaction_id}/extend_tracking_deadline": {
         parameters: {
             query?: never;
             header?: never;
@@ -1826,7 +1802,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/generate_shipment_label": {
+    "/api/v1/transactions/{transaction_id}/generate_shipment_label": {
         parameters: {
             query?: never;
             header?: never;
@@ -1848,7 +1824,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/seller_details": {
+    "/api/v1/transactions/{transaction_id}/seller_details": {
         parameters: {
             query?: never;
             header?: never;
@@ -1865,7 +1841,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/set_payment_method": {
+    "/api/v1/transactions/{transaction_id}/set_payment_method": {
         parameters: {
             query?: never;
             header?: never;
@@ -1890,7 +1866,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/shipping_details": {
+    "/api/v1/transactions/{transaction_id}/shipping_details": {
         parameters: {
             query?: never;
             header?: never;
@@ -1908,7 +1884,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/shippo_address": {
+    "/api/v1/transactions/{transaction_id}/shippo_address": {
         parameters: {
             query?: never;
             header?: never;
@@ -1925,7 +1901,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/shippo_customs_declaration": {
+    "/api/v1/transactions/{transaction_id}/shippo_customs_declaration": {
         parameters: {
             query?: never;
             header?: never;
@@ -1942,7 +1918,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/shippo_parcel_details": {
+    "/api/v1/transactions/{transaction_id}/shippo_parcel_details": {
         parameters: {
             query?: never;
             header?: never;
@@ -1959,7 +1935,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/shippo_shipping_label": {
+    "/api/v1/transactions/{transaction_id}/shippo_shipping_label": {
         parameters: {
             query?: never;
             header?: never;
@@ -1976,7 +1952,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/shippo_shipping_rate": {
+    "/api/v1/transactions/{transaction_id}/shippo_shipping_rate": {
         parameters: {
             query?: never;
             header?: never;
@@ -1999,7 +1975,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/shippo_shipping_rates": {
+    "/api/v1/transactions/{transaction_id}/shippo_shipping_rates": {
         parameters: {
             query?: never;
             header?: never;
@@ -2016,7 +1992,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/stripe_client_secret": {
+    "/api/v1/transactions/{transaction_id}/stripe_client_secret": {
         parameters: {
             query?: never;
             header?: never;
@@ -2040,7 +2016,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/stripe_publishable_key": {
+    "/api/v1/transactions/{transaction_id}/stripe_publishable_key": {
         parameters: {
             query?: never;
             header?: never;
@@ -2061,7 +2037,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/submit_order_issue": {
+    "/api/v1/transactions/{transaction_id}/submit_order_issue": {
         parameters: {
             query?: never;
             header?: never;
@@ -2078,7 +2054,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/track": {
+    "/api/v1/transactions/{transaction_id}/track": {
         parameters: {
             query?: never;
             header?: never;
@@ -2104,7 +2080,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions/{transaction_id}/track_with_guest_seller": {
+    "/api/v1/transactions/{transaction_id}/track_with_guest_seller": {
         parameters: {
             query?: never;
             header?: never;
@@ -2125,7 +2101,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions_by_claim_secret/{secret}/claim_as_buyer": {
+    "/api/v1/transactions_by_claim_secret/{secret}/claim_as_buyer": {
         parameters: {
             query?: never;
             header?: never;
@@ -2146,7 +2122,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/transactions_by_claim_secret/{secret}/claim_as_seller": {
+    "/api/v1/transactions_by_claim_secret/{secret}/claim_as_seller": {
         parameters: {
             query?: never;
             header?: never;
@@ -2350,10 +2326,12 @@ export interface components {
         /**
          * @example {
          *       "charge": 340,
+         *       "charge_buyer_client": 0,
          *       "charge_calculator_version": 5,
          *       "charge_config": 1,
          *       "charge_postage_buyer": 1000,
          *       "charge_seller": 0,
+         *       "charge_seller_client": 0,
          *       "currency": "eur",
          *       "payment_method": "card",
          *       "price": 10000
@@ -2368,6 +2346,12 @@ export interface components {
              *     for more details.
              */
             charge: number;
+            /**
+             * Format: int64
+             * @description The portion of the buyer's fee that is attributed to the client,
+             *     in the `currency`'s smallest unit.
+             */
+            charge_buyer_client: number;
             /**
              * Format: int64
              * @description The version of the Trustap charge calculator that was used
@@ -2413,6 +2397,12 @@ export interface components {
              *     for more details.
              */
             charge_seller: number;
+            /**
+             * Format: int64
+             * @description The portion of the seller's fee that is attributed to the client,
+             *     in the `currency`'s smallest unit.
+             */
+            charge_seller_client: number;
             currency: string;
             payment_method?: string;
             /** Format: int64 */
@@ -2489,9 +2479,13 @@ export interface components {
             /** Format: int64 */
             charge: number;
             /** Format: int64 */
+            charge_buyer_client: number;
+            /** Format: int64 */
             charge_international_payment?: number;
             /** Format: int64 */
             charge_seller: number;
+            /** Format: int64 */
+            charge_seller_client: number;
             /** Format: int64 */
             price: number;
         };
@@ -2618,6 +2612,8 @@ export interface components {
             /** Format: int64 */
             charge: number;
             /** Format: int64 */
+            charge_buyer_client: number;
+            /** Format: int64 */
             charge_international_payment?: number;
             /** Format: int64 */
             charge_postage_buyer?: number;
@@ -2625,6 +2621,8 @@ export interface components {
             charge_postage_client?: number;
             /** Format: int64 */
             charge_seller: number;
+            /** Format: int64 */
+            charge_seller_client: number;
             /** Format: date-time */
             claimed_by_buyer?: string;
             client_id: string;
@@ -2767,9 +2765,11 @@ export interface components {
         /**
          * @example {
          *       "charge": 78,
+         *       "charge_buyer_client": 0,
          *       "charge_calculator_version": 5,
          *       "charge_config": 1,
          *       "charge_seller": 0,
+         *       "charge_seller_client": 0,
          *       "currency": "eur",
          *       "payment_method": "card",
          *       "price": 1234
@@ -2784,6 +2784,12 @@ export interface components {
              *     for more details.
              */
             charge: number;
+            /**
+             * Format: int64
+             * @description The portion of the buyer's fee that is attributed to the client,
+             *     in the `currency`'s smallest unit.
+             */
+            charge_buyer_client: number;
             /**
              * Format: int64
              * @description The version of the Trustap charge calculator that was used
@@ -2819,6 +2825,12 @@ export interface components {
              *     for more details.
              */
             charge_seller: number;
+            /**
+             * Format: int64
+             * @description The portion of the seller's fee that is attributed to the client,
+             *     in the `currency`'s smallest unit.
+             */
+            charge_seller_client: number;
             currency: string;
             payment_method?: string;
             /** Format: int64 */
@@ -2893,9 +2905,13 @@ export interface components {
             /** Format: int64 */
             charge: number;
             /** Format: int64 */
+            charge_buyer_client: number;
+            /** Format: int64 */
             charge_international_payment?: number;
             /** Format: int64 */
             charge_seller: number;
+            /** Format: int64 */
+            charge_seller_client: number;
             deposit_fee_multiplier?: components["schemas"]["p2p.DepositFeeMultiplier"];
             /** Format: int64 */
             price: number;
@@ -3216,7 +3232,7 @@ export interface components {
         /** @enum {string} */
         "personal.VerificationStatus": "unset" | "invalid" | "verifying" | "verified_and_verifying" | "verified" | "set";
         /** @enum {string} */
-        "users.AccessRole": "admin";
+        "users.AccessRole": "admin" | "reader";
         "users.Balances": {
             available: {
                 /** Format: int64 */
@@ -4800,7 +4816,7 @@ export interface operations {
             };
         };
     };
-    "p2p.createWithSeller": {
+    "p2p.createListingWithSeller": {
         parameters: {
             query?: never;
             header?: never;
@@ -6123,69 +6139,6 @@ export interface operations {
             };
         };
     };
-    "p2p.getRemainderStripeClientSecretForTransaction": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                transaction_id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        client_secret: string;
-                    };
-                };
-            };
-            /**
-             * @description Bad Request
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `missing_pricing`: Pricing details have not yet been
-             *         added to this transaction.
-             *       * `no_client_secret`
-             */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /**
-             * @description Forbidden
-             *
-             *     `code` can be one of the following:
-             *
-             *       * `not_buyer`
-             */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
     "p2p.setDepositPaymentMethod": {
         parameters: {
             query?: never;
@@ -6598,6 +6551,35 @@ export interface operations {
             };
         };
     };
+    "p2p.getTransactionByJoinCode": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                join_code: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["p2p.Transaction"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     "p2p.joinTransactionByJoinCode": {
         parameters: {
             query?: never;
@@ -6636,35 +6618,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Not Found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    getP2PTransactionByJoinCode: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                joinCode: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["p2p.Transaction"];
                 };
             };
             /** @description Not Found */
