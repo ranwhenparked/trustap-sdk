@@ -55,3 +55,6 @@ jobs:
             - **Major**: Breaking changes
           branch: chore/update-openapi-spec
           commit-message: 'chore: update OpenAPI spec and regenerate types'
+          add-paths: |
+            spec/**
+            src/**
