@@ -261,6 +261,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/me/payouts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get the list of payouts for the current user in each currency */
+        get: operations["users.getPayouts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/me/personal/additional_identity_document/verification_status": {
         parameters: {
             query?: never;
@@ -2152,11 +2169,6 @@ export interface components {
             name: string;
         };
         /**
-         * @example fedex
-         * @enum {string}
-         */
-        CarrierName: "fedex" | "ups" | "usps" | "posta_hr";
-        /**
          * @example {
          *       "description": "Item was fake"
          *     }
@@ -2315,14 +2327,6 @@ export interface components {
             name?: string;
             phone?: string;
         };
-        "basic.CarrierFacility": {
-            address: string;
-            city: string;
-            code?: string;
-            delivery_type: string;
-            name: string;
-            postal_code: string;
-        };
         /**
          * @example {
          *       "charge": 340,
@@ -2416,19 +2420,6 @@ export interface components {
             /** Format: int64 */
             tracking_details_allowance_seconds?: number;
         };
-        "basic.DeliveryDetails": {
-            carrier: string;
-            city: string;
-            delivery_center_code: string;
-            delivery_type: string;
-            email: string;
-            full_name: string;
-            house_number: string;
-            house_number_suffix: string;
-            phone: string;
-            postal_code: string;
-            street: string;
-        };
         /**
          * @example cm
          * @enum {string}
@@ -2456,39 +2447,6 @@ export interface components {
          * @enum {string}
          */
         "basic.MassUnit": "lb" | "kg";
-        "basic.PickUpDetails": {
-            carrier: string;
-            city: string;
-            delivery_type: string;
-            email: string;
-            full_name: string;
-            house_number: string;
-            house_number_suffix: string;
-            phone: string;
-            pick_up_center_code: string;
-            postal_code: string;
-            street: string;
-        };
-        /**
-         * @example {
-         *       "charge": 78,
-         *       "price": 1234
-         *     }
-         */
-        "basic.Pricing": {
-            /** Format: int64 */
-            charge: number;
-            /** Format: int64 */
-            charge_buyer_client: number;
-            /** Format: int64 */
-            charge_international_payment?: number;
-            /** Format: int64 */
-            charge_seller: number;
-            /** Format: int64 */
-            charge_seller_client: number;
-            /** Format: int64 */
-            price: number;
-        };
         "basic.Refund": {
             /** Format: int64 */
             amount: number;
@@ -2575,7 +2533,9 @@ export interface components {
          * @example {
          *       "buyer_id": "feb33a87-3917-4538-9260-127c8a6b5232",
          *       "charge": 78,
+         *       "charge_buyer_client": 0,
          *       "charge_seller": 0,
+         *       "charge_seller_client": 0,
          *       "client_id": "trustap-app",
          *       "created": "2019-12-25T09:00:00Z",
          *       "currency": "eur",
@@ -2707,17 +2667,6 @@ export interface components {
             /** Format: date-time */
             tracking_details_window_started?: string;
         };
-        "basic.TransactionPage": {
-            data: components["schemas"]["basic.Transaction"][];
-            /** Format: int64 */
-            page: number;
-            /** Format: int64 */
-            page_size: number;
-            /** Format: int64 */
-            total_count: number;
-            /** Format: int64 */
-            total_pages: number;
-        };
         /**
          * @example {
          *       "first": "John",
@@ -2727,21 +2676,6 @@ export interface components {
         "basic.UserDetailsName": {
             first: string;
             last: string;
-        };
-        "client.ClientCustomization": {
-            button_color_hex?: string;
-            client_id?: string;
-            collect_phone_number?: boolean;
-            /** Format: date-time */
-            created?: string;
-            favicon_url?: string;
-            id?: string;
-            name?: string;
-            protection_fee_label?: string;
-            public_name?: string;
-            text_color_hex?: string;
-            /** Format: date-time */
-            updated?: string;
         };
         "p2p.Aba": {
             account_number: string;
@@ -2898,6 +2832,9 @@ export interface components {
         /**
          * @example {
          *       "charge": 78,
+         *       "charge_buyer_client": 0,
+         *       "charge_seller": 0,
+         *       "charge_seller_client": 0,
          *       "price": 1234
          *     }
          */
@@ -2941,13 +2878,20 @@ export interface components {
             account_number: string;
             sort_code: string;
         };
-        "p2p.StripeToken": {
-            stripe_token: string;
-        };
         "p2p.Swift": {
             account_number: string;
             bank_name: string;
             swift_code: string;
+        };
+        /**
+         * @example {
+         *       "carrier": "ups",
+         *       "tracking_code": "***"
+         *     }
+         */
+        "p2p.Tracking": {
+            carrier: string;
+            tracking_code: string;
         };
         /**
          * @example {
@@ -2960,6 +2904,9 @@ export interface components {
          *       "deposit_paid": "2019-12-25T11:00:00Z",
          *       "deposit_pricing": {
          *         "charge": 78,
+         *         "charge_buyer_client": 0,
+         *         "charge_seller": 0,
+         *         "charge_seller_client": 0,
          *         "price": 1234
          *       },
          *       "description": "Soccer ticket",
@@ -2971,8 +2918,12 @@ export interface components {
          *       "priced": "2019-12-25T13:00:00Z",
          *       "pricing": {
          *         "charge": 190,
+         *         "charge_buyer_client": 0,
+         *         "charge_seller": 0,
+         *         "charge_seller_client": 0,
          *         "price": 5000
          *       },
+         *       "quantity": 1,
          *       "remainder_paid": "2019-12-25T14:00:00Z",
          *       "seller_handover_confirmed": "2019-12-25T15:00:00Z",
          *       "seller_id": "ad5bb99f-85bf-47e1-be0d-15e7541c6ad7",
@@ -3010,6 +2961,8 @@ export interface components {
              *     seller will be paid in the transaction's currency.
              */
             currency: string;
+            /** Format: date-time */
+            delivered?: string;
             /** Format: date-time */
             deposit_accepted?: string;
             /** Format: date-time */
@@ -3086,17 +3039,9 @@ export interface components {
              */
             skip_remainder: boolean;
             status: string;
-        };
-        "p2p.TransactionPage": {
-            data: components["schemas"]["p2p.Transaction"][];
-            /** Format: int64 */
-            page: number;
-            /** Format: int64 */
-            page_size: number;
-            /** Format: int64 */
-            total_count: number;
-            /** Format: int64 */
-            total_pages: number;
+            /** Format: date-time */
+            tracked?: string;
+            tracking?: components["schemas"]["p2p.Tracking"];
         };
         "personal.BankAccount": {
             bank_name: string;
@@ -3231,8 +3176,6 @@ export interface components {
         };
         /** @enum {string} */
         "personal.VerificationStatus": "unset" | "invalid" | "verifying" | "verified_and_verifying" | "verified" | "set";
-        /** @enum {string} */
-        "users.AccessRole": "admin" | "reader";
         "users.Balances": {
             available: {
                 /** Format: int64 */
@@ -3245,6 +3188,8 @@ export interface components {
         };
         /**
          * @example {
+         *       "created_at": "2019-12-25T13:00:00Z",
+         *       "email": "jo@example.com",
          *       "id": "1-feb33a87-3917-4538-9260-127c8a6b5232"
          *     }
          */
@@ -3256,54 +3201,23 @@ export interface components {
             email: string;
             id: string;
         };
+        "users.PayoutItem": {
+            /** Format: int64 */
+            amount: number;
+            /** Format: date-time */
+            arriving: string;
+            currency: string;
+            /** Format: date-time */
+            initiated: string;
+            status: string;
+        };
+        "users.Payouts": {
+            payouts: components["schemas"]["users.PayoutItem"][];
+        };
         "users.TosAcceptance": {
             ip: string;
             /** Format: int64 */
             unix_timestamp: number;
-        };
-        /**
-         * @example {
-         *       "id": "2-feb33a87-3917-4538-9260-127c8a6b5232"
-         *     }
-         */
-        "users.User": {
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            deleted_at?: string;
-            email: string;
-            id: string;
-        };
-        "users_client.ClientUserWithRoles": {
-            /** @description User email address */
-            email: string;
-            /** @description User full name */
-            full_name: string;
-            /** @description User ID */
-            id: string;
-            /** @description Array of client role names */
-            roles: components["schemas"]["users.AccessRole"][];
-        };
-        /**
-         * @example {
-         *       "email": "test@test.com",
-         *       "id": "2-feb33a87-3917-4538-9260-127c8a6b5232"
-         *     }
-         */
-        "users_client.User": {
-            email: string;
-            id: string;
-        };
-        "webhook.ClientWebhook": {
-            client_id: string;
-            /** Format: date-time */
-            created: string;
-            id: string;
-            password: string;
-            /** Format: date-time */
-            updated?: string;
-            url: string;
-            username: string;
         };
     };
     responses: never;
@@ -3804,6 +3718,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["personal.PayoutAttempt"][];
+                };
+            };
+        };
+    };
+    "users.getPayouts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["users.Payouts"];
                 };
             };
         };
@@ -4954,7 +4888,7 @@ export interface operations {
                     /** Format: int64 */
                     charge_calculator_version: number;
                     client_id?: string;
-                    currency: components["schemas"]["Currency"];
+                    currency: components["schemas"]["p2p.Currency"];
                     /** Format: int64 */
                     deposit_charge: number;
                     /**
@@ -4970,7 +4904,7 @@ export interface operations {
                     deposit_price: number;
                     /** @description A description of the goods being sold. */
                     description: string;
-                    role: components["schemas"]["basic.Role"];
+                    role: components["schemas"]["p2p.Role"];
                     /**
                      * @description If `skip_remainder` is `true` then this
                      *     transaction will move to the "confirm handover"
@@ -5026,7 +4960,7 @@ export interface operations {
                     /** Format: int64 */
                     charge_calculator_version: number;
                     creator_role: components["schemas"]["p2p.Role"];
-                    currency: components["schemas"]["Currency"];
+                    currency: components["schemas"]["p2p.Currency"];
                     /** Format: int64 */
                     deposit_charge: number;
                     /**
@@ -8243,7 +8177,7 @@ export interface operations {
                     height: number;
                     /** Format: double */
                     length: number;
-                    mass_unit: components["schemas"]["basic.DistanceUnit"];
+                    mass_unit: components["schemas"]["basic.MassUnit"];
                     /**
                      * @description Date the shipment will be tendered to the carrier.
                      *     Must be in the format 2014-01-18T00:35:03.463Z
