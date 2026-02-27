@@ -604,6 +604,19 @@ paths:
       summary: Get the payout attempts that have occurred for this account
       tags:
         - Personal
+  /api/v1/me/payouts:
+    get:
+      operationId: users.getPayouts
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/users.Payouts'
+      summary: Get the list of payouts for the current user in each currency
+      tags:
+        - Buyers and Sellers
   /api/v1/me/personal/additional_identity_document/verification_status:
     get:
       operationId: getAdditionalIdentityDocumentVerificationStatus
@@ -938,24 +951,34 @@ paths:
               schema:
                 example:
                   - charge: 78
+                    charge_buyer_client: 0
                     charge_seller: 0
+                    charge_seller_client: 0
+                    client_id: trustap-app
                     created: '2019-12-25T09:00:00Z'
                     currency: eur
                     description: Soccer ticket
                     id: 1309
+                    is_payment_in_progress: false
                     join_code: 54c5bb89-a5ea-4be7-ad7a-e740c2eebab4
                     price: 1234
+                    quantity: 1
                     seller_id: ad5bb99f-85bf-47e1-be0d-15e7541c6ad7
                     status: created
                   - buyer_id: ad5bb99f-85bf-47e1-be0d-15e7541c6ad7
                     charge: 78
+                    charge_buyer_client: 0
                     charge_seller: 0
+                    charge_seller_client: 0
+                    client_id: trustap-app
                     created: '2018-12-25T09:00:00Z'
                     currency: eur
                     description: Soccer ticket
                     id: 609
+                    is_payment_in_progress: false
                     join_code: c9cd6a9d-1096-4d38-b4aa-2c354beac845
                     price: 1234
+                    quantity: 1
                     status: created
                 items:
                   $ref: '#/components/schemas/basic.Transaction'
@@ -987,18 +1010,12 @@ paths:
             schema:
               example:
                 charge: 78
+                charge_calculator_version: 5
                 charge_seller: 0
-                client_id: test-auth
-                created: '2025-08-28T11:47:44.134539654Z'
                 currency: eur
                 description: Little Fish
-                id: 1
-                is_payment_in_progress: false
-                join_code: 02e591b3-e80d-4ed8-927e-743df1a0cc22
                 price: 1234
-                quantity: 1
-                seller_id: 45e2537a-a9f4-4b4e-9f90-3761cfd4f35b
-                status: created
+                role: seller
               properties:
                 charge:
                   description: |
@@ -1114,7 +1131,6 @@ paths:
                 join_user_id: feb33a87-3917-4538-9260-127c8a6b5232
                 payment_method: bank_transfer
                 price: 1234
-                role: seller
               properties:
                 charge:
                   description: |
@@ -1249,17 +1265,17 @@ paths:
           application/json:
             schema:
               example:
-                - buyer_id: 1-bd5bb99j-95bf-87e2-ce0d-95e7541c6ad5
-                  charge: 78
-                  charge_calculator_version: 5
-                  charge_config: 1
-                  charge_seller: 0
-                  creator_role: seller
-                  currency: eur
-                  description: Soccer ticket
-                  payment_method: bank_transfer
-                  price: 1234
-                  seller_id: ad5bb99f-85bf-47e1-be0d-15e7541c6ad7
+                buyer_id: 1-bd5bb99j-95bf-87e2-ce0d-95e7541c6ad5
+                charge: 78
+                charge_calculator_version: 5
+                charge_config: 1
+                charge_seller: 0
+                creator_role: seller
+                currency: eur
+                description: Soccer ticket
+                payment_method: bank_transfer
+                price: 1234
+                seller_id: ad5bb99f-85bf-47e1-be0d-15e7541c6ad7
               properties:
                 buyer_id:
                   description: |
@@ -1900,7 +1916,9 @@ paths:
                     currency: eur
                     deposit_pricing:
                       charge: 118
+                      charge_buyer_client: 0
                       charge_seller: 0
+                      charge_seller_client: 0
                       price: 1234
                     description: Little Fish
                     id: 156
@@ -1916,7 +1934,9 @@ paths:
                     currency: eur
                     deposit_pricing:
                       charge: 118
+                      charge_buyer_client: 0
                       charge_seller: 0
+                      charge_seller_client: 0
                       price: 1234
                     description: Little Fish
                     id: 155
@@ -1976,7 +1996,7 @@ paths:
                 client_id:
                   type: string
                 currency:
-                  $ref: '#/components/schemas/Currency'
+                  $ref: '#/components/schemas/p2p.Currency'
                 deposit_charge:
                   format: int64
                   type: integer
@@ -2000,7 +2020,7 @@ paths:
                     A description of the goods being sold.
                   type: string
                 role:
-                  $ref: '#/components/schemas/basic.Role'
+                  $ref: '#/components/schemas/p2p.Role'
                 skip_remainder:
                   description: |
                     If `skip_remainder` is `true` then this
@@ -2062,7 +2082,6 @@ paths:
             schema:
               example:
                 charge_calculator_version: 5
-                client_id: test-auth
                 creator_role: seller
                 currency: eur
                 deposit_charge: 118
@@ -2079,7 +2098,7 @@ paths:
                 creator_role:
                   $ref: '#/components/schemas/p2p.Role'
                 currency:
-                  $ref: '#/components/schemas/Currency'
+                  $ref: '#/components/schemas/p2p.Currency'
                 deposit_charge:
                   format: int64
                   type: integer
@@ -3609,6 +3628,7 @@ paths:
                 sender_phone: '123456789'
                 sender_state: Victoria
                 sender_street_1: 21-27 Marshall Court
+                sender_zip_code: '44685'
               properties:
                 currency:
                   type: string
@@ -4965,7 +4985,7 @@ paths:
                 country: us
                 name: John Doe
                 phone: 330-896-9303
-                postal_code: 44685
+                postal_code: '44685'
                 state: Ohio
               properties:
                 address_line_1:
@@ -5029,10 +5049,11 @@ paths:
                 city: Altona
                 country: au
                 full_name: Ivan Horvat
-                phone: 4215559099
-                postal_code: 10000
+                is_sender_address: true
+                phone: '4215559099'
                 state: Victoria
                 street_1: 21-27 Marshall Court
+                zip_code: '10000'
               properties:
                 city:
                   type: string
@@ -5108,7 +5129,7 @@ paths:
                 non_delivery_option: return
                 origin_country: US
                 quantity: 20
-                value_amount: 200
+                value_amount: '200'
                 value_currency: USD
               properties:
                 certify:
@@ -5187,8 +5208,9 @@ paths:
               example:
                 distance_unit: cm
                 height: 10
-                lenght: 10
+                length: 10
                 mass_unit: lb
+                shipment_date: '2019-12-25T09:00:00Z'
                 weight: 10
                 width: 10
               properties:
@@ -5201,7 +5223,7 @@ paths:
                   format: double
                   type: number
                 mass_unit:
-                  $ref: '#/components/schemas/basic.DistanceUnit'
+                  $ref: '#/components/schemas/basic.MassUnit'
                 shipment_date:
                   description: |
                     Date the shipment will be tendered to the carrier.
@@ -5803,6 +5825,7 @@ x-tagGroups:
       - F2F Complaint
       - F2F Cancel
       - F2F Buyer/Seller Details
+      - F2F Shipping
   - name: Trustap lite
     tags:
       - Trustap Lite
@@ -5933,14 +5956,6 @@ components:
         - code
         - name
       type: object
-    CarrierName:
-      enum:
-        - fedex
-        - ups
-        - usps
-        - posta_hr
-      example: fedex
-      type: string
     Complaint:
       example:
         description: Item was fake
@@ -6207,27 +6222,6 @@ components:
       required:
         - email
       type: object
-    basic.CarrierFacility:
-      properties:
-        address:
-          type: string
-        city:
-          type: string
-        code:
-          type: string
-        delivery_type:
-          type: string
-        name:
-          type: string
-        postal_code:
-          type: string
-      required:
-        - delivery_type
-        - name
-        - postal_code
-        - address
-        - city
-      type: object
     basic.Charge:
       example:
         charge: 340
@@ -6335,43 +6329,6 @@ components:
           format: int64
           type: integer
       type: object
-    basic.DeliveryDetails:
-      properties:
-        carrier:
-          type: string
-        city:
-          type: string
-        delivery_center_code:
-          type: string
-        delivery_type:
-          type: string
-        email:
-          type: string
-        full_name:
-          type: string
-        house_number:
-          type: string
-        house_number_suffix:
-          type: string
-        phone:
-          type: string
-        postal_code:
-          type: string
-        street:
-          type: string
-      required:
-        - full_name
-        - phone
-        - email
-        - street
-        - house_number
-        - house_number_suffix
-        - postal_code
-        - city
-        - carrier
-        - delivery_center_code
-        - delivery_type
-      type: object
     basic.DistanceUnit:
       enum:
         - in
@@ -6418,73 +6375,6 @@ components:
         - kg
       example: kg
       type: string
-    basic.PickUpDetails:
-      properties:
-        carrier:
-          type: string
-        city:
-          type: string
-        delivery_type:
-          type: string
-        email:
-          type: string
-        full_name:
-          type: string
-        house_number:
-          type: string
-        house_number_suffix:
-          type: string
-        phone:
-          type: string
-        pick_up_center_code:
-          type: string
-        postal_code:
-          type: string
-        street:
-          type: string
-      required:
-        - full_name
-        - phone
-        - email
-        - street
-        - house_number
-        - house_number_suffix
-        - postal_code
-        - city
-        - carrier
-        - pick_up_center_code
-        - delivery_type
-      type: object
-    basic.Pricing:
-      example:
-        charge: 78
-        price: 1234
-      properties:
-        charge:
-          format: int64
-          type: integer
-        charge_buyer_client:
-          format: int64
-          type: integer
-        charge_international_payment:
-          format: int64
-          type: integer
-        charge_seller:
-          format: int64
-          type: integer
-        charge_seller_client:
-          format: int64
-          type: integer
-        price:
-          format: int64
-          type: integer
-      required:
-        - price
-        - charge
-        - charge_seller
-        - charge_buyer_client
-        - charge_seller_client
-      type: object
     basic.Refund:
       properties:
         amount:
@@ -6684,7 +6574,9 @@ components:
       example:
         buyer_id: feb33a87-3917-4538-9260-127c8a6b5232
         charge: 78
+        charge_buyer_client: 0
         charge_seller: 0
+        charge_seller_client: 0
         client_id: trustap-app
         created: '2019-12-25T09:00:00Z'
         currency: eur
@@ -6880,31 +6772,6 @@ components:
         - is_payment_in_progress
         - client_id
       type: object
-    basic.TransactionPage:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/basic.Transaction'
-          type: array
-        page:
-          format: int64
-          type: integer
-        page_size:
-          format: int64
-          type: integer
-        total_count:
-          format: int64
-          type: integer
-        total_pages:
-          format: int64
-          type: integer
-      required:
-        - data
-        - total_count
-        - page
-        - total_pages
-        - page_size
-      type: object
     basic.UserDetailsName:
       example:
         first: John
@@ -6917,33 +6784,6 @@ components:
       required:
         - first
         - last
-      type: object
-    client.ClientCustomization:
-      properties:
-        button_color_hex:
-          type: string
-        client_id:
-          type: string
-        collect_phone_number:
-          type: boolean
-        created:
-          format: date-time
-          type: string
-        favicon_url:
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        protection_fee_label:
-          type: string
-        public_name:
-          type: string
-        text_color_hex:
-          type: string
-        updated:
-          format: date-time
-          type: string
       type: object
     p2p.Aba:
       properties:
@@ -7176,6 +7016,9 @@ components:
     p2p.Pricing:
       example:
         charge: 78
+        charge_buyer_client: 0
+        charge_seller: 0
+        charge_seller_client: 0
         price: 1234
       properties:
         charge:
@@ -7252,13 +7095,6 @@ components:
         - account_number
         - sort_code
       type: object
-    p2p.StripeToken:
-      properties:
-        stripe_token:
-          type: string
-      required:
-        - stripe_token
-      type: object
     p2p.Swift:
       properties:
         account_number:
@@ -7272,6 +7108,19 @@ components:
         - bank_name
         - swift_code
       type: object
+    p2p.Tracking:
+      example:
+        carrier: ups
+        tracking_code: '***'
+      properties:
+        carrier:
+          type: string
+        tracking_code:
+          type: string
+      required:
+        - carrier
+        - tracking_code
+      type: object
     p2p.Transaction:
       example:
         buyer_handover_confirmed: '2019-12-25T16:00:00Z'
@@ -7283,6 +7132,9 @@ components:
         deposit_paid: '2019-12-25T11:00:00Z'
         deposit_pricing:
           charge: 78
+          charge_buyer_client: 0
+          charge_seller: 0
+          charge_seller_client: 0
           price: 1234
         description: Soccer ticket
         funds_released: '2019-12-25T17:00:00Z'
@@ -7293,7 +7145,11 @@ components:
         priced: '2019-12-25T13:00:00Z'
         pricing:
           charge: 190
+          charge_buyer_client: 0
+          charge_seller: 0
+          charge_seller_client: 0
           price: 5000
+        quantity: 1
         remainder_paid: '2019-12-25T14:00:00Z'
         seller_handover_confirmed: '2019-12-25T15:00:00Z'
         seller_id: ad5bb99f-85bf-47e1-be0d-15e7541c6ad7
@@ -7342,6 +7198,9 @@ components:
             The currency of the transaction. Note that, at present, the
             buyer must pay using the transaction's currency and the
             seller will be paid in the transaction's currency.
+          type: string
+        delivered:
+          format: date-time
           type: string
         deposit_accepted:
           format: date-time
@@ -7455,6 +7314,11 @@ components:
           type: boolean
         status:
           type: string
+        tracked:
+          format: date-time
+          type: string
+        tracking:
+          $ref: '#/components/schemas/p2p.Tracking'
       required:
         - id
         - currency
@@ -7467,31 +7331,6 @@ components:
         - is_deposit_payment_in_progress
         - is_remainder_payment_in_progress
         - client_id
-      type: object
-    p2p.TransactionPage:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/p2p.Transaction'
-          type: array
-        page:
-          format: int64
-          type: integer
-        page_size:
-          format: int64
-          type: integer
-        total_count:
-          format: int64
-          type: integer
-        total_pages:
-          format: int64
-          type: integer
-      required:
-        - data
-        - total_count
-        - page
-        - total_pages
-        - page_size
       type: object
     personal.BankAccount:
       properties:
@@ -7856,11 +7695,6 @@ components:
         - verified
         - set
       type: string
-    users.AccessRole:
-      enum:
-        - admin
-        - reader
-      type: string
     users.Balances:
       properties:
         available:
@@ -7886,6 +7720,8 @@ components:
       type: object
     users.GuestUser:
       example:
+        created_at: '2019-12-25T13:00:00Z'
+        email: jo@example.com
         id: 1-feb33a87-3917-4538-9260-127c8a6b5232
       properties:
         created_at:
@@ -7903,6 +7739,37 @@ components:
         - email
         - created_at
       type: object
+    users.PayoutItem:
+      properties:
+        amount:
+          format: int64
+          type: integer
+        arriving:
+          format: date-time
+          type: string
+        currency:
+          type: string
+        initiated:
+          format: date-time
+          type: string
+        status:
+          type: string
+      required:
+        - amount
+        - currency
+        - status
+        - initiated
+        - arriving
+      type: object
+    users.Payouts:
+      properties:
+        payouts:
+          items:
+            $ref: '#/components/schemas/users.PayoutItem'
+          type: array
+      required:
+        - payouts
+      type: object
     users.TosAcceptance:
       properties:
         ip:
@@ -7914,84 +7781,4 @@ components:
       required:
         - unix_timestamp
         - ip
-      type: object
-    users.User:
-      example:
-        id: 2-feb33a87-3917-4538-9260-127c8a6b5232
-      properties:
-        created_at:
-          format: date-time
-          type: string
-        deleted_at:
-          format: date-time
-          type: string
-        email:
-          type: string
-        id:
-          type: string
-      required:
-        - id
-        - email
-        - created_at
-      type: object
-    users_client.ClientUserWithRoles:
-      properties:
-        email:
-          description: User email address
-          type: string
-        full_name:
-          description: User full name
-          type: string
-        id:
-          description: User ID
-          type: string
-        roles:
-          description: Array of client role names
-          items:
-            $ref: '#/components/schemas/users.AccessRole'
-          type: array
-      required:
-        - id
-        - email
-        - full_name
-        - roles
-      type: object
-    users_client.User:
-      example:
-        email: test@test.com
-        id: 2-feb33a87-3917-4538-9260-127c8a6b5232
-      properties:
-        email:
-          type: string
-        id:
-          type: string
-      required:
-        - id
-        - email
-      type: object
-    webhook.ClientWebhook:
-      properties:
-        client_id:
-          type: string
-        created:
-          format: date-time
-          type: string
-        id:
-          type: string
-        password:
-          type: string
-        updated:
-          format: date-time
-          type: string
-        url:
-          type: string
-        username:
-          type: string
-      required:
-        - id
-        - client_id
-        - url
-        - username
-        - password
-        - created
       type: object
