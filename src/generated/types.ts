@@ -266,6 +266,49 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v2/transactions/{transaction_id}/confirm_handover": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Confirm the handover of goods for a transaction
+         * @deprecated
+         * @description This endpoint is deprecated.
+         *     Use the `confirm delivery for transaction` endpoint instead.
+         */
+        post: operations["v2_transactions.confirmHandoverForTransaction"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v2/transactions/{transaction_id}/items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add items to a transaction
+         * @description Adds one or more items to a transaction. Items with a
+         *     `recurring_period` are billed automatically on that interval.
+         */
+        post: operations["v2_transactions.addTransactionItems"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v2/transactions/{transaction_id}/metadata": {
         parameters: {
             query?: never;
@@ -368,6 +411,28 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v2/users/{user_id}/account_status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get the status of a user's account completion
+         * @description This endpoint returns the status of the ability of the user identified
+         *     by the `user_id` in the path to accept payouts. It can only be accessed
+         *     with an API key.
+         */
+        get: operations["v2_users.getAccountPayoutStatus"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -416,6 +481,11 @@ export interface components {
             processor: string;
             stripe?: components["schemas"]["v2_transactions.StripeBankTransferDetails"];
         };
+        /**
+         * @example one_time
+         * @enum {string}
+         */
+        "v2_transactions.BillingType": "one_time" | "recurring";
         "v2_transactions.Carrier": {
             code: string;
             name: string;
@@ -550,6 +620,11 @@ export interface components {
              */
             postage_bearer?: "buyer" | "seller" | "client";
         };
+        /**
+         * @example month
+         * @enum {string}
+         */
+        "v2_transactions.RecurringPeriod": "day" | "week" | "month" | "year";
         "v2_transactions.ShippingDetails": {
             address: components["schemas"]["v2_transactions.ShippingDetailsAddress"];
             name: string;
@@ -689,6 +764,8 @@ export interface components {
             };
             /** Format: type_id */
             id: string;
+            /** @description The items added to the transaction. */
+            items?: components["schemas"]["v2_transactions.TransactionItem"][];
             join_code?: string;
             /** @description Arbitrary key-value string pairs for adding extra information to transactions. */
             metadata?: {
@@ -709,6 +786,100 @@ export interface components {
             status: components["schemas"]["v2_transactions.Status"];
             tracking?: components["schemas"]["v2_transactions.Tracking"];
         };
+        "v2_transactions.TransactionItem": {
+            /** Format: int64 */
+            amount: number;
+            /** Format: int64 */
+            amount_extra?: number;
+            /** Format: int64 */
+            amount_postage?: number;
+            /** Format: int64 */
+            amount_tax?: number;
+            billing_type: components["schemas"]["v2_transactions.BillingType"];
+            /** Format: date-time */
+            created: string;
+            description: string;
+            /**
+             * Format: absolute_url
+             * @description URL of an image representing the item, shown to the buyer.
+             *     Supports jpg, png, gif, bmp, webp and svg files.
+             */
+            image_url?: string;
+            item_id: string;
+            /** Format: int64 */
+            quantity?: number;
+            recurring_period?: components["schemas"]["v2_transactions.RecurringPeriod"];
+            ref_id?: string;
+            tax_code?: string;
+        };
+        "v2_transactions.TransactionItemBody": {
+            /**
+             * Format: int64
+             * @description The base price of a single unit of the item, in the
+             *     transaction's currency's smallest unit.
+             */
+            amount: number;
+            /**
+             * Format: int64
+             * @description This field adds an additional cost to the item. Use it to
+             *     charge a buyer for things like fulfillment costs. The
+             *     `amount_extra` field is separate from the `amount` field. It
+             *     applies once per item and isn't multiplied by `quantity`.
+             *     This separation displays the additional cost apart from the
+             *     base price on the Trustap payment page. It also helps
+             *     clients track the breakdown of charges.
+             */
+            amount_extra?: number;
+            /**
+             * Format: int64
+             * @description This field adds an additional cost to the item. Use it to
+             *     charge a buyer for things like shipping costs. The
+             *     `amount_postage` field is separate from the `amount` field.
+             *     It applies once per item and isn't multiplied by `quantity`.
+             *     This separation displays the additional cost apart from the
+             *     base price on the Trustap payment page. It also helps
+             *     clients track the breakdown of charges.
+             */
+            amount_postage?: number;
+            /**
+             * Format: int64
+             * @description Unlike `amount_extra` and `amount_postage`, this field
+             *     doesn't add an additional cost to the item. It's the portion
+             *     of a single unit's `amount` that is tax, so use `amount` and
+             *     `amount_tax` together to break the per-unit amount down into
+             *     its base amount and the tax portion. The combined
+             *     `quantity * (amount + amount_tax)` of all items must still
+             *     equal the transaction's amount.
+             */
+            amount_tax?: number;
+            billing_type: components["schemas"]["v2_transactions.BillingType"];
+            description: string;
+            /**
+             * Format: absolute_url
+             * @description URL of an image representing the item, shown to the buyer.
+             *     Supports jpg, png, gif, bmp, webp and svg files.
+             */
+            image_url?: string;
+            /**
+             * Format: int64
+             * @description The number of units of this item. `amount` and `amount_tax`
+             *     are per-unit values: the combined
+             *     `quantity * (amount + amount_tax)` across all items must
+             *     equal the transaction's amount. Defaults to `1`.
+             */
+            quantity?: number;
+            recurring_period?: components["schemas"]["v2_transactions.RecurringPeriod"];
+            /**
+             * @description An optional ID that can be provided to tie the item to a
+             *     resource in the client's own system.
+             */
+            ref_id?: string;
+            /**
+             * @description A code identifying the type of goods or service being sold,
+             *     used to determine the applicable tax treatment.
+             */
+            tax_code?: string;
+        };
         /**
          * @example {
          *       "id": "9097",
@@ -727,6 +898,25 @@ export interface components {
         "v2_transactions.UserDetailsName": {
             first: string;
             last: string;
+        };
+        /**
+         * @example {
+         *       "status": "verifying"
+         *     }
+         */
+        "v2_users.AccountPayout": {
+            /**
+             * @description Account payout status will be one of the following:
+             *     - `complete`: The user has completed their profile and payment information,
+             *     and can accept payouts.
+             *     - `verifying`: The user has submitted profile and payment information, which
+             *     is currently being verified.
+             *     - `incomplete`: The user has not adequately filled out their payment information,
+             *     or may need to update or ammend the provided information before they can
+             *     accept payouts.
+             * @enum {string}
+             */
+            status: "complete" | "verifying" | "incomplete";
         };
         "v2_users.TosAcceptance": {
             ip: string;
@@ -1331,6 +1521,127 @@ export interface operations {
             };
         };
     };
+    "v2_transactions.confirmHandoverForTransaction": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Required in client flows, where you make API calls on behalf of another Trustap user. */
+                "Trustap-User"?: string;
+            };
+            path: {
+                transaction_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["v2_transactions.Transaction"];
+                };
+            };
+        };
+    };
+    "v2_transactions.addTransactionItems": {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Required in client flows, where you make API calls on behalf of another Trustap user. */
+                "Trustap-User"?: string;
+            };
+            path: {
+                transaction_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    items: components["schemas"]["v2_transactions.TransactionItemBody"][];
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["v2_transactions.Transaction"];
+                };
+            };
+            /**
+             * @description Bad Request
+             *
+             *     `code` can be one of the following:
+             *
+             *       * `duplicate_ref_id`: More than one item in the request has the same `ref_id`.
+             *       * `items_already_added`: Items have already been added to this transaction.
+             *       * `payment_not_made`: Items can only be added to a transaction once it's been paid.
+             *       * `invalid_amount`: The combined `amount` + `amount_tax` of all items doesn't match the transaction's amount.
+             *       * `invalid_amount_extra`: The combined `amount_extra` of all items doesn't match the transaction's `amount_extra`.
+             *       * `invalid_amount_postage`: The combined `amount_postage` of all items doesn't match the transaction's `amount_postage`.
+             *       * `negative_amount`: An item's `amount` cannot be negative.
+             *       * `negative_amount_extra`: An item's `amount_extra` cannot be negative.
+             *       * `negative_amount_postage`: An item's `amount_postage` cannot be negative.
+             *       * `negative_amount_tax`: An item's `amount_tax` cannot be negative.
+             *       * `amount_too_large`: An item's `amount` + `amount_extra` is too large.
+             *       * `amount_too_low`: An item's `amount` is below the minimum for its currency.
+             *       * `invalid_quantity`: An item's `quantity` must be greater than zero.
+             *       * `invalid_billing_type`: An item's `billing_type` isn't `one_time` or `recurring`.
+             *       * `invalid_recurring_period`
+             *       * `recurring_period_required`: An item's `billing_type` is `recurring`, but it doesn't have a `recurring_period`.
+             *       * `unexpected_recurring_period`: An item's `billing_type` is `one_time`, but it has a `recurring_period`.
+             *       * `unsupported_recurring_payment_method`: An item is recurring, but the transaction's payment method doesn't support recurring items.
+             *       * `unsupported_currency`
+             */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code: "duplicate_ref_id" | "items_already_added" | "payment_not_made" | "invalid_amount" | "invalid_amount_extra" | "invalid_amount_postage" | "negative_amount" | "negative_amount_extra" | "negative_amount_postage" | "negative_amount_tax" | "amount_too_large" | "amount_too_low" | "invalid_quantity" | "invalid_billing_type" | "invalid_recurring_period" | "recurring_period_required" | "unexpected_recurring_period" | "unsupported_recurring_payment_method" | "unsupported_currency";
+                        message: string;
+                    };
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /**
+             * @description Conflict
+             *
+             *     `code` can be one of the following:
+             *
+             *       * `item_description_mismatch`: An item with `ref_id` already exists with a different description.
+             *       * `item_tax_code_mismatch`: An item with `ref_id` already exists with a different tax_code.
+             *       * `item_image_url_mismatch`: An item with `ref_id` already exists with a different image_url.
+             */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @enum {string} */
+                        code: "item_description_mismatch" | "item_tax_code_mismatch" | "item_image_url_mismatch";
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
     "v2_transactions.setTransactionMetadata": {
         parameters: {
             query?: never;
@@ -1583,7 +1894,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         /** @enum {string} */
-                        code: "invalid_id" | "empty_carrier" | "empty_tracking_code" | "tracking_already_added" | "payment_details_not_added" | "tracking_details_deadline_expired" | "already_cancelled" | "tracking_not_supported";
+                        code: "invalid_id" | "empty_carrier" | "empty_tracking_code" | "tracking_already_added" | "payment_details_not_added" | "tracking_details_deadline_expired" | "already_cancelled" | "tracking_not_supported" | "deposit_not_accepted";
                         message: string;
                     };
                 };
@@ -1610,6 +1921,45 @@ export interface operations {
                     "application/json": {
                         /** @enum {string} */
                         code: "missing_payment_intent";
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "v2_users.getAccountPayoutStatus": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["v2_users.AccountPayout"];
+                };
+            };
+            /**
+             * @description Bad Request
+             *
+             *     `code` can be one of the following:
+             *       * `invalid_user_id`
+             */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
                         message: string;
                     };
                 };

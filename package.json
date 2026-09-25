@@ -1,6 +1,6 @@
 {
   "name": "@ranwhenparked/trustap-sdk",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "description": "Type-safe Trustap API v2 SDK with webhook validation",
   "type": "module",
   "main": "./dist/index.js",

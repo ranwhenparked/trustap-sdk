@@ -26,7 +26,7 @@ info:
 
     using an API key. API keys are provided as the "username" portion of a
 
-    basic auth authentication. For example, the Trustap fee for a 
+    basic auth authentication. For example, the Trustap fee for a
 
     transaction can be determined using the following cURL request with an
 
@@ -35,7 +35,7 @@ info:
 
     ``` bash
 
-    curl -i -X GET -u '<API_KEY>:'​
+    curl -i -X GET -u '<API_KEY>:'
     'https://api.test.trustap.com/v2/fees?currency=usd&amount=896'
 
     ```
@@ -46,20 +46,18 @@ info:
     -----------
 
 
-    Deprecated endpoints are tagged with the word `DEPRECATED` at the start
-
-    of their description. The deprecation message will describe what
+    Deprecated endpoints have a description that describes what
 
     endpoints/approach should be used instead.
 
 
-    Note that deprecated endpoints will not be removed from the current
+    Deprecated endpoints will remain available in the current API version, but
 
-    version of the API, but their use is discouraged. Furthermore, migrating
+    will be removed from subsequent API versions. To ensure a smooth migration
 
-    to later major versions of the API will be made easier by avoiding
+    to later API versions, avoid using deprecated endpoints and replace them
 
-    deprecated endpoints.
+    with their recommended alternatives when they are deprecated.
 
 
     Production
@@ -1314,6 +1312,229 @@ paths:
           log_resp_body: true
           require_active_country: false
           skip_offline_scope_check: true
+  /v2/transactions/{transaction_id}/confirm_handover:
+    post:
+      deprecated: true
+      description: |
+        This endpoint is deprecated. 
+        Use the `confirm delivery for transaction` endpoint instead.
+      operationId: v2_transactions.confirmHandoverForTransaction
+      parameters:
+        - description: >-
+            Required in client flows, where you make API calls on behalf of
+            another Trustap user.
+          in: header
+          name: Trustap-User
+          required: false
+          schema:
+            type: string
+        - in: path
+          name: transaction_id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2_transactions.Transaction'
+              examples:
+                response:
+                  value:
+                    buyer:
+                      id: 1-a5034d6a-1110-4d33-b6dd-c6ff1b3b2e28
+                      is_guest: true
+                    client_id: 5a3d7990-9f1c-4e11-8d67-3da5b160c50a
+                    deadlines:
+                      complaints: '2026-07-31T18:52:59Z'
+                    description: Trustap socks
+                    events:
+                      by_key:
+                        buyer_handover_confirmed: '2026-07-31T18:47:59Z'
+                        created: '2026-07-31T18:45:49Z'
+                        joined: '2026-07-31T18:45:49Z'
+                        paid: '2026-07-31T18:46:36Z'
+                        payment_accepted: '2026-07-31T18:46:53Z'
+                      by_time:
+                        - at: '2026-07-31T18:45:49Z'
+                          code: created
+                        - at: '2026-07-31T18:45:49Z'
+                          code: joined
+                        - at: '2026-07-31T18:46:36Z'
+                          by: 1-a5034d6a-1110-4d33-b6dd-c6ff1b3b2e28
+                          code: paid
+                        - at: '2026-07-31T18:46:53Z'
+                          by: 8e5cbedc-e57b-42e5-a3bd-2f9ced81a2d0
+                          code: payment_accepted
+                        - at: '2026-07-31T18:47:59Z'
+                          by: 1-a5034d6a-1110-4d33-b6dd-c6ff1b3b2e28
+                          code: buyer_handover_confirmed
+                    funds_release:
+                      refunds: []
+                      released_to_seller: false
+                    id: tx_01kywqydvkeaf8yz2sw2q0wmn3
+                    metadata: {}
+                    pricing:
+                      amount: 20000
+                      amount_extra: 0
+                      currency: eur
+                      fees:
+                        buyer: 1050
+                        buyer_client: 0
+                        seller: 0
+                        seller_client: 0
+                    seller:
+                      id: 8e5cbedc-e57b-42e5-a3bd-2f9ced81a2d0
+                      is_guest: false
+                    status: delivered
+      summary: Confirm the handover of goods for a transaction
+      tags:
+        - Handover
+      x-toc-endpoint:
+        context: p2p_any_user
+        meta:
+          allow_guest_user: true
+          log_req_body: true
+          log_resp_body: true
+          require_active_country: false
+          skip_offline_scope_check: true
+  /v2/transactions/{transaction_id}/items:
+    post:
+      description: |
+        Adds one or more items to a transaction. Items with a
+        `recurring_period` are billed automatically on that interval.
+      operationId: v2_transactions.addTransactionItems
+      parameters:
+        - description: >-
+            Required in client flows, where you make API calls on behalf of
+            another Trustap user.
+          in: header
+          name: Trustap-User
+          required: false
+          schema:
+            type: string
+        - in: path
+          name: transaction_id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                items:
+                  items:
+                    $ref: '#/components/schemas/v2_transactions.TransactionItemBody'
+                  type: array
+              required:
+                - items
+              type: object
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2_transactions.Transaction'
+        '400':
+          description: |
+            Bad Request
+
+            `code` can be one of the following:
+
+              * `duplicate_ref_id`: More than one item in the request has the same `ref_id`.
+              * `items_already_added`: Items have already been added to this transaction.
+              * `payment_not_made`: Items can only be added to a transaction once it's been paid.
+              * `invalid_amount`: The combined `amount` + `amount_tax` of all items doesn't match the transaction's amount.
+              * `invalid_amount_extra`: The combined `amount_extra` of all items doesn't match the transaction's `amount_extra`.
+              * `invalid_amount_postage`: The combined `amount_postage` of all items doesn't match the transaction's `amount_postage`.
+              * `negative_amount`: An item's `amount` cannot be negative.
+              * `negative_amount_extra`: An item's `amount_extra` cannot be negative.
+              * `negative_amount_postage`: An item's `amount_postage` cannot be negative.
+              * `negative_amount_tax`: An item's `amount_tax` cannot be negative.
+              * `amount_too_large`: An item's `amount` + `amount_extra` is too large.
+              * `amount_too_low`: An item's `amount` is below the minimum for its currency.
+              * `invalid_quantity`: An item's `quantity` must be greater than zero.
+              * `invalid_billing_type`: An item's `billing_type` isn't `one_time` or `recurring`.
+              * `invalid_recurring_period`
+              * `recurring_period_required`: An item's `billing_type` is `recurring`, but it doesn't have a `recurring_period`.
+              * `unexpected_recurring_period`: An item's `billing_type` is `one_time`, but it has a `recurring_period`.
+              * `unsupported_recurring_payment_method`: An item is recurring, but the transaction's payment method doesn't support recurring items.
+              * `unsupported_currency`
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    enum:
+                      - duplicate_ref_id
+                      - items_already_added
+                      - payment_not_made
+                      - invalid_amount
+                      - invalid_amount_extra
+                      - invalid_amount_postage
+                      - negative_amount
+                      - negative_amount_extra
+                      - negative_amount_postage
+                      - negative_amount_tax
+                      - amount_too_large
+                      - amount_too_low
+                      - invalid_quantity
+                      - invalid_billing_type
+                      - invalid_recurring_period
+                      - recurring_period_required
+                      - unexpected_recurring_period
+                      - unsupported_recurring_payment_method
+                      - unsupported_currency
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+                type: object
+        '404':
+          description: Not Found
+        '409':
+          description: |
+            Conflict
+
+            `code` can be one of the following:
+
+              * `item_description_mismatch`: An item with `ref_id` already exists with a different description.
+              * `item_tax_code_mismatch`: An item with `ref_id` already exists with a different tax_code.
+              * `item_image_url_mismatch`: An item with `ref_id` already exists with a different image_url.
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    enum:
+                      - item_description_mismatch
+                      - item_tax_code_mismatch
+                      - item_image_url_mismatch
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+                type: object
+      summary: Add items to a transaction
+      tags:
+        - Transactions
+      x-toc-endpoint:
+        context: p2p_any_user
+        meta:
+          allow_guest_user: true
+          log_req_body: true
+          log_resp_body: true
+          require_active_country: false
+          skip_offline_scope_check: true
   /v2/transactions/{transaction_id}/metadata:
     post:
       operationId: v2_transactions.setTransactionMetadata
@@ -1891,6 +2112,7 @@ paths:
                       - tracking_details_deadline_expired
                       - already_cancelled
                       - tracking_not_supported
+                      - deposit_not_accepted
                     type: string
                   message:
                     type: string
@@ -1941,6 +2163,55 @@ paths:
           log_resp_body: true
           require_active_country: false
           skip_offline_scope_check: true
+  /v2/users/{user_id}/account_status:
+    get:
+      description: |
+        This endpoint returns the status of the ability of the user identified
+        by the `user_id` in the path to accept payouts. It can only be accessed
+        with an API key.
+      operationId: v2_users.getAccountPayoutStatus
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2_users.AccountPayout'
+        '400':
+          description: |
+            Bad Request
+
+            `code` can be one of the following:
+              * `invalid_user_id`
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+                type: object
+      security:
+        - APIKey: []
+      summary: Get the status of a user's account completion
+      tags:
+        - Buyers and Sellers
+      x-toc-endpoint:
+        context: v2_users_account_status
+        meta:
+          disallow_full_user: true
+          log_req_body: true
+          log_resp_body: true
 security:
   - APIKey: []
   - OAuth2: []
@@ -2097,6 +2368,12 @@ components:
       required:
         - processor
       type: object
+    v2_transactions.BillingType:
+      enum:
+        - one_time
+        - recurring
+      example: one_time
+      type: string
     v2_transactions.Carrier:
       properties:
         code:
@@ -2307,6 +2584,14 @@ components:
         - currency
         - fees
       type: object
+    v2_transactions.RecurringPeriod:
+      enum:
+        - day
+        - week
+        - month
+        - year
+      example: month
+      type: string
     v2_transactions.ShippingDetails:
       properties:
         address:
@@ -2563,6 +2848,12 @@ components:
         id:
           format: type_id
           type: string
+        items:
+          description: |
+            The items added to the transaction.
+          items:
+            $ref: '#/components/schemas/v2_transactions.TransactionItem'
+          type: array
         join_code:
           type: string
         metadata:
@@ -2612,6 +2903,130 @@ components:
         - description
         - events
       type: object
+    v2_transactions.TransactionItem:
+      properties:
+        amount:
+          format: int64
+          type: integer
+        amount_extra:
+          format: int64
+          type: integer
+        amount_postage:
+          format: int64
+          type: integer
+        amount_tax:
+          format: int64
+          type: integer
+        billing_type:
+          $ref: '#/components/schemas/v2_transactions.BillingType'
+        created:
+          format: date-time
+          type: string
+        description:
+          type: string
+        image_url:
+          description: |
+            URL of an image representing the item, shown to the buyer.
+            Supports jpg, png, gif, bmp, webp and svg files.
+          format: absolute_url
+          maxLength: 2047
+          type: string
+        item_id:
+          type: string
+        quantity:
+          format: int64
+          type: integer
+        recurring_period:
+          $ref: '#/components/schemas/v2_transactions.RecurringPeriod'
+        ref_id:
+          type: string
+        tax_code:
+          type: string
+      required:
+        - item_id
+        - description
+        - amount
+        - billing_type
+        - created
+      type: object
+    v2_transactions.TransactionItemBody:
+      properties:
+        amount:
+          description: |
+            The base price of a single unit of the item, in the
+            transaction's currency's smallest unit.
+          format: int64
+          type: integer
+        amount_extra:
+          description: |
+            This field adds an additional cost to the item. Use it to
+            charge a buyer for things like fulfillment costs. The
+            `amount_extra` field is separate from the `amount` field. It
+            applies once per item and isn't multiplied by `quantity`.
+            This separation displays the additional cost apart from the
+            base price on the Trustap payment page. It also helps
+            clients track the breakdown of charges.
+          format: int64
+          type: integer
+        amount_postage:
+          description: |
+            This field adds an additional cost to the item. Use it to
+            charge a buyer for things like shipping costs. The
+            `amount_postage` field is separate from the `amount` field.
+            It applies once per item and isn't multiplied by `quantity`.
+            This separation displays the additional cost apart from the
+            base price on the Trustap payment page. It also helps
+            clients track the breakdown of charges.
+          format: int64
+          type: integer
+        amount_tax:
+          description: |
+            Unlike `amount_extra` and `amount_postage`, this field
+            doesn't add an additional cost to the item. It's the portion
+            of a single unit's `amount` that is tax, so use `amount` and
+            `amount_tax` together to break the per-unit amount down into
+            its base amount and the tax portion. The combined
+            `quantity * (amount + amount_tax)` of all items must still
+            equal the transaction's amount.
+          format: int64
+          type: integer
+        billing_type:
+          $ref: '#/components/schemas/v2_transactions.BillingType'
+        description:
+          type: string
+        image_url:
+          description: |
+            URL of an image representing the item, shown to the buyer.
+            Supports jpg, png, gif, bmp, webp and svg files.
+          format: absolute_url
+          maxLength: 2047
+          type: string
+        quantity:
+          description: |
+            The number of units of this item. `amount` and `amount_tax`
+            are per-unit values: the combined
+            `quantity * (amount + amount_tax)` across all items must
+            equal the transaction's amount. Defaults to `1`.
+          format: int64
+          minimum: 1
+          type: integer
+        recurring_period:
+          $ref: '#/components/schemas/v2_transactions.RecurringPeriod'
+        ref_id:
+          description: |
+            An optional ID that can be provided to tie the item to a
+            resource in the client's own system.
+          type: string
+        tax_code:
+          description: |
+            A code identifying the type of goods or service being sold,
+            used to determine the applicable tax treatment.
+          type: string
+      required:
+        - description
+        - amount
+        - billing_type
+      type: object
     v2_transactions.User:
       example:
         id: '9097'
@@ -2645,6 +3060,39 @@ components:
       required:
         - first
         - last
+      type: object
+    v2_users.AccountPayout:
+      example:
+        status: verifying
+      properties:
+        status:
+          description: >
+            Account payout status will be one of the following:
+
+            - `complete`: The user has completed their profile and payment
+            information,
+
+            and can accept payouts.
+
+            - `verifying`: The user has submitted profile and payment
+            information, which
+
+            is currently being verified.
+
+            - `incomplete`: The user has not adequately filled out their payment
+            information,
+
+            or may need to update or ammend the provided information before they
+            can
+
+            accept payouts.
+          enum:
+            - complete
+            - verifying
+            - incomplete
+          type: string
+      required:
+        - status
       type: object
     v2_users.TosAcceptance:
       properties:
