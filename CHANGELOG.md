@@ -2,6 +2,19 @@
 
 All notable changes to this package are documented here.
 
+## [3.1.0](https://github.com/ranwhenparked/trustap-sdk/releases/tag/v3.1.0) - 2026-10-06
+
+### Added
+
+- Added `POST /v2/transactions/{transaction_id}/items` for adding items to a transaction, with recurring billing support.
+- Added `GET /v2/users/{user_id}/account_status` for fetching a user's payout account status.
+- Added `TransactionItem`, `TransactionItemBody`, `BillingType`, `RecurringPeriod`, and `AccountPayout` schemas.
+- Added the `deposit_not_accepted` error code to transaction tracking responses.
+
+### Deprecated
+
+- Restored `POST /v2/transactions/{transaction_id}/confirm_handover` as a deprecated endpoint.
+
 ## [3.0.1](https://github.com/ranwhenparked/trustap-sdk/releases/tag/v3.0.1) - 2026-09-01
 
 ### Fixed
