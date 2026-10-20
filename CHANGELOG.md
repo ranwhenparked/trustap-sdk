@@ -2,6 +2,22 @@
 
 All notable changes to this package are documented here.
 
+## [4.0.0](https://github.com/ranwhenparked/trustap-sdk/releases/tag/v4.0.0) - 2026-10-20
+
+### Breaking changes
+
+- Removed the deprecated `GET` and `POST /v2/transactions/{transaction_id}/shipping_details` endpoints and the `ShippingDetails` and `ShippingDetailsAddress` schemas.
+- Removed the `payment_not_made` error code from `POST /v2/transactions/{transaction_id}/items` responses.
+
+### Added
+
+- Added optional `first_name` and `last_name` fields to the `User` schema.
+- Added the `already_cancelled`, `already_rejected`, and `recurring_items_require_payment` error codes to `POST /v2/transactions/{transaction_id}/items` responses.
+
+### Changed
+
+- One-time transaction items can now be added before payment; recurring items still require a paid transaction.
+
 ## [3.1.0](https://github.com/ranwhenparked/trustap-sdk/releases/tag/v3.1.0) - 2026-10-06
 
 ### Added
