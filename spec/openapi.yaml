@@ -1317,7 +1317,7 @@ paths:
       deprecated: true
       description: |
         This endpoint is deprecated. 
-        Use the `confirm delivery for transaction` endpoint instead.
+        Use `POST /transactions/{transaction_id}/confirm_delivery` instead.
       operationId: v2_transactions.confirmHandoverForTransaction
       parameters:
         - description: >-
@@ -1405,6 +1405,10 @@ paths:
       description: |
         Adds one or more items to a transaction. Items with a
         `recurring_period` are billed automatically on that interval.
+
+        One-time items can be added at any point, including before the
+        transaction has been paid. Recurring items can only be added once the
+        transaction has been paid.
       operationId: v2_transactions.addTransactionItems
       parameters:
         - description: >-
@@ -1448,7 +1452,8 @@ paths:
 
               * `duplicate_ref_id`: More than one item in the request has the same `ref_id`.
               * `items_already_added`: Items have already been added to this transaction.
-              * `payment_not_made`: Items can only be added to a transaction once it's been paid.
+              * `already_cancelled`: The transaction was cancelled before it was paid.
+              * `already_rejected`: The transaction was rejected before it was paid.
               * `invalid_amount`: The combined `amount` + `amount_tax` of all items doesn't match the transaction's amount.
               * `invalid_amount_extra`: The combined `amount_extra` of all items doesn't match the transaction's `amount_extra`.
               * `invalid_amount_postage`: The combined `amount_postage` of all items doesn't match the transaction's `amount_postage`.
@@ -1463,6 +1468,7 @@ paths:
               * `invalid_recurring_period`
               * `recurring_period_required`: An item's `billing_type` is `recurring`, but it doesn't have a `recurring_period`.
               * `unexpected_recurring_period`: An item's `billing_type` is `one_time`, but it has a `recurring_period`.
+              * `recurring_items_require_payment`: An item is recurring, but the transaction hasn't been paid yet. Recurring items can only be added once the transaction has been paid.
               * `unsupported_recurring_payment_method`: An item is recurring, but the transaction's payment method doesn't support recurring items.
               * `unsupported_currency`
           content:
@@ -1473,7 +1479,8 @@ paths:
                     enum:
                       - duplicate_ref_id
                       - items_already_added
-                      - payment_not_made
+                      - already_cancelled
+                      - already_rejected
                       - invalid_amount
                       - invalid_amount_extra
                       - invalid_amount_postage
@@ -1488,6 +1495,7 @@ paths:
                       - invalid_recurring_period
                       - recurring_period_required
                       - unexpected_recurring_period
+                      - recurring_items_require_payment
                       - unsupported_recurring_payment_method
                       - unsupported_currency
                     type: string
@@ -1624,103 +1632,6 @@ paths:
           log_req_body: true
           log_resp_body: true
           require_active_country: false
-  /v2/transactions/{transaction_id}/shipping_details:
-    get:
-      operationId: v2_transactions.getShippingDetailsForTransaction
-      parameters:
-        - in: path
-          name: transaction_id
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/v2_transactions.ShippingDetails'
-      summary: Get the shipping details of the buyer for a transaction
-      tags:
-        - Shipping
-      x-toc-endpoint:
-        context: p2p
-        meta:
-          allow_guest_user: true
-          log_req_body: true
-          log_resp_body: true
-          require_active_country: false
-    post:
-      operationId: v2_transactions.setShippingDetailsForTransaction
-      parameters:
-        - in: path
-          name: transaction_id
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                address_line_1:
-                  type: string
-                address_line_2:
-                  type: string
-                city:
-                  type: string
-                country:
-                  minLength: 1
-                  type: string
-                name:
-                  minLength: 1
-                  type: string
-                phone:
-                  type: string
-                postal_code:
-                  type: string
-                state:
-                  type: string
-              required:
-                - name
-                - country
-              type: object
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/v2_transactions.ShippingDetails'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                properties:
-                  code:
-                    enum:
-                      - empty_name
-                      - empty_country
-                    type: string
-                  message:
-                    type: string
-                required:
-                  - code
-                  - message
-                type: object
-      summary: Post the shipping details of the buyer for a transaction
-      tags:
-        - Shipping
-      x-toc-endpoint:
-        context: p2p
-        meta:
-          allow_guest_user: true
-          log_req_body: true
-          log_resp_body: true
-          require_active_country: false
-          skip_offline_scope_check: true
   /v2/transactions/{transaction_id}/submit_complaint:
     post:
       description: |
@@ -2592,41 +2503,6 @@ components:
         - year
       example: month
       type: string
-    v2_transactions.ShippingDetails:
-      properties:
-        address:
-          $ref: '#/components/schemas/v2_transactions.ShippingDetailsAddress'
-        name:
-          type: string
-        phone:
-          type: string
-      required:
-        - address
-        - name
-        - phone
-      type: object
-    v2_transactions.ShippingDetailsAddress:
-      properties:
-        city:
-          type: string
-        country:
-          type: string
-        line1:
-          type: string
-        line2:
-          type: string
-        postal_code:
-          type: string
-        state:
-          type: string
-      required:
-        - city
-        - country
-        - line1
-        - line2
-        - state
-        - postal_code
-      type: object
     v2_transactions.Status:
       enum:
         - created
@@ -3110,7 +2986,9 @@ components:
       example:
         created_at: '2019-12-25T13:00:00Z'
         email: jo@example.com
+        first_name: Test
         id: 1-feb33a87-3917-4538-9260-127c8a6b5232
+        last_name: User
       properties:
         created_at:
           format: date-time
@@ -3120,7 +2998,13 @@ components:
           type: string
         email:
           type: string
+        first_name:
+          minLength: 1
+          type: string
         id:
+          type: string
+        last_name:
+          minLength: 1
           type: string
       required:
         - id
