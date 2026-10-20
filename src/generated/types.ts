@@ -279,7 +279,7 @@ export interface paths {
          * Confirm the handover of goods for a transaction
          * @deprecated
          * @description This endpoint is deprecated.
-         *     Use the `confirm delivery for transaction` endpoint instead.
+         *     Use `POST /transactions/{transaction_id}/confirm_delivery` instead.
          */
         post: operations["v2_transactions.confirmHandoverForTransaction"];
         delete?: never;
@@ -301,6 +301,10 @@ export interface paths {
          * Add items to a transaction
          * @description Adds one or more items to a transaction. Items with a
          *     `recurring_period` are billed automatically on that interval.
+         *
+         *     One-time items can be added at any point, including before the
+         *     transaction has been paid. Recurring items can only be added once the
+         *     transaction has been paid.
          */
         post: operations["v2_transactions.addTransactionItems"];
         delete?: never;
@@ -320,24 +324,6 @@ export interface paths {
         put?: never;
         /** Set metadata for a transaction */
         post: operations["v2_transactions.setTransactionMetadata"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v2/transactions/{transaction_id}/shipping_details": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get the shipping details of the buyer for a transaction */
-        get: operations["v2_transactions.getShippingDetailsForTransaction"];
-        put?: never;
-        /** Post the shipping details of the buyer for a transaction */
-        post: operations["v2_transactions.setShippingDetailsForTransaction"];
         delete?: never;
         options?: never;
         head?: never;
@@ -625,19 +611,6 @@ export interface components {
          * @enum {string}
          */
         "v2_transactions.RecurringPeriod": "day" | "week" | "month" | "year";
-        "v2_transactions.ShippingDetails": {
-            address: components["schemas"]["v2_transactions.ShippingDetailsAddress"];
-            name: string;
-            phone: string;
-        };
-        "v2_transactions.ShippingDetailsAddress": {
-            city: string;
-            country: string;
-            line1: string;
-            line2: string;
-            postal_code: string;
-            state: string;
-        };
         /** @enum {string} */
         "v2_transactions.Status": "created" | "joined" | "rejected" | "cancelled" | "paid" | "review_flagged" | "payment_accepted" | "complaint_submitted" | "complaint_period_ended" | "refunded" | "tracked" | "delivered" | "funds_released" | "claimed_by_buyer" | "claimed_by_seller";
         "v2_transactions.StripeAba": {
@@ -927,7 +900,9 @@ export interface components {
          * @example {
          *       "created_at": "2019-12-25T13:00:00Z",
          *       "email": "jo@example.com",
-         *       "id": "1-feb33a87-3917-4538-9260-127c8a6b5232"
+         *       "first_name": "Test",
+         *       "id": "1-feb33a87-3917-4538-9260-127c8a6b5232",
+         *       "last_name": "User"
          *     }
          */
         "v2_users.User": {
@@ -936,7 +911,9 @@ export interface components {
             /** Format: date-time */
             deleted_at?: string;
             email: string;
+            first_name?: string;
             id: string;
+            last_name?: string;
         };
     };
     responses: never;
@@ -1582,7 +1559,8 @@ export interface operations {
              *
              *       * `duplicate_ref_id`: More than one item in the request has the same `ref_id`.
              *       * `items_already_added`: Items have already been added to this transaction.
-             *       * `payment_not_made`: Items can only be added to a transaction once it's been paid.
+             *       * `already_cancelled`: The transaction was cancelled before it was paid.
+             *       * `already_rejected`: The transaction was rejected before it was paid.
              *       * `invalid_amount`: The combined `amount` + `amount_tax` of all items doesn't match the transaction's amount.
              *       * `invalid_amount_extra`: The combined `amount_extra` of all items doesn't match the transaction's `amount_extra`.
              *       * `invalid_amount_postage`: The combined `amount_postage` of all items doesn't match the transaction's `amount_postage`.
@@ -1597,6 +1575,7 @@ export interface operations {
              *       * `invalid_recurring_period`
              *       * `recurring_period_required`: An item's `billing_type` is `recurring`, but it doesn't have a `recurring_period`.
              *       * `unexpected_recurring_period`: An item's `billing_type` is `one_time`, but it has a `recurring_period`.
+             *       * `recurring_items_require_payment`: An item is recurring, but the transaction hasn't been paid yet. Recurring items can only be added once the transaction has been paid.
              *       * `unsupported_recurring_payment_method`: An item is recurring, but the transaction's payment method doesn't support recurring items.
              *       * `unsupported_currency`
              */
@@ -1607,7 +1586,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         /** @enum {string} */
-                        code: "duplicate_ref_id" | "items_already_added" | "payment_not_made" | "invalid_amount" | "invalid_amount_extra" | "invalid_amount_postage" | "negative_amount" | "negative_amount_extra" | "negative_amount_postage" | "negative_amount_tax" | "amount_too_large" | "amount_too_low" | "invalid_quantity" | "invalid_billing_type" | "invalid_recurring_period" | "recurring_period_required" | "unexpected_recurring_period" | "unsupported_recurring_payment_method" | "unsupported_currency";
+                        code: "duplicate_ref_id" | "items_already_added" | "already_cancelled" | "already_rejected" | "invalid_amount" | "invalid_amount_extra" | "invalid_amount_postage" | "negative_amount" | "negative_amount_extra" | "negative_amount_postage" | "negative_amount_tax" | "amount_too_large" | "amount_too_low" | "invalid_quantity" | "invalid_billing_type" | "invalid_recurring_period" | "recurring_period_required" | "unexpected_recurring_period" | "recurring_items_require_payment" | "unsupported_recurring_payment_method" | "unsupported_currency";
                         message: string;
                     };
                 };
@@ -1677,76 +1656,6 @@ export interface operations {
                     "application/json": {
                         /** @enum {string} */
                         code: "too_many_keys" | "value_too_long" | "key_too_long" | "empty_json" | "unsupported_type";
-                        message: string;
-                    };
-                };
-            };
-        };
-    };
-    "v2_transactions.getShippingDetailsForTransaction": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                transaction_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v2_transactions.ShippingDetails"];
-                };
-            };
-        };
-    };
-    "v2_transactions.setShippingDetailsForTransaction": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                transaction_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    address_line_1?: string;
-                    address_line_2?: string;
-                    city?: string;
-                    country: string;
-                    name: string;
-                    phone?: string;
-                    postal_code?: string;
-                    state?: string;
-                };
-            };
-        };
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["v2_transactions.ShippingDetails"];
-                };
-            };
-            /** @description Bad Request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @enum {string} */
-                        code: "empty_name" | "empty_country";
                         message: string;
                     };
                 };
