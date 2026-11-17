@@ -2460,18 +2460,34 @@ components:
         fees:
           properties:
             buyer:
+              description: >
+                Total portion of the fees paid by the buyer, including
+                `buyer_client` and the Trustap fee.
               format: int64
               type: integer
             buyer_client:
+              description: >
+                Portion of the fees paid by the buyer, collected as commission
+                for the client.
               format: int64
               type: integer
             international_payment:
+              description: >
+                Additional fee charged to the seller when the buyer's payment
+                method originates from a different economic region than the
+                seller.
               format: int64
               type: integer
             seller:
+              description: >
+                Total portion of the fees paid by the seller, including
+                `seller_client` and the Trustap fee.
               format: int64
               type: integer
             seller_client:
+              description: >
+                Portion of the fees deducted from the seller's payout, collected
+                as commission for the client.
               format: int64
               type: integer
           required:

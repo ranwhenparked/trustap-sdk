@@ -588,15 +588,30 @@ export interface components {
              */
             currency: string;
             fees: {
-                /** Format: int64 */
+                /**
+                 * Format: int64
+                 * @description Total portion of the fees paid by the buyer, including `buyer_client` and the Trustap fee.
+                 */
                 buyer: number;
-                /** Format: int64 */
+                /**
+                 * Format: int64
+                 * @description Portion of the fees paid by the buyer, collected as commission for the client.
+                 */
                 buyer_client: number;
-                /** Format: int64 */
+                /**
+                 * Format: int64
+                 * @description Additional fee charged to the seller when the buyer's payment method originates from a different economic region than the seller.
+                 */
                 international_payment?: number;
-                /** Format: int64 */
+                /**
+                 * Format: int64
+                 * @description Total portion of the fees paid by the seller, including `seller_client` and the Trustap fee.
+                 */
                 seller: number;
-                /** Format: int64 */
+                /**
+                 * Format: int64
+                 * @description Portion of the fees deducted from the seller's payout, collected as commission for the client.
+                 */
                 seller_client: number;
             };
             /**
